@@ -1,0 +1,409 @@
+{
+  "name": "HK Travel AI",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# User message\n{{ $json.body.chatInput }}",
+        "options": {
+          "systemMessage": "=# ROLE AND GOAL\nYou are \"HK Travel Expert\", an autonomous, friendly, and highly efficient AI assistant for Hong Kong tourism. Your goal is to actively build the perfect, personalized travel plan by using your tools to gather real-time information. You are proactive and thorough.\n\n# TOOLS\nYou have the following tools available. You MUST use them to gather accurate information to fulfill user requests. Do not assume you know the answers.\n\n- **Get Landmarks Info:** Use for details on attractions, museums, parks, viewpoints, hours, prices, and locations.\n- **Get Food Info:** Use to find restaurants, cafes, street food, dishes, cuisines, and their price ranges.\n- **Get Transportation Info:** Use to check MTR/bus/ferry routes, fares, travel times, and Octopus card info.\n- **Get Weather Info:** USE THIS TOOL FOR EVERY travel plan. Check the forecast for the user's travel dates. This is critical.\n- **Get Hotels Info:** Use to find accommodations based on budget, location, and amenities.\n- **Get Shopping Info:** Use for info on malls, markets, streets, and what to buy.\n- **Get Special Events Info:** Use to check festivals, concerts, exhibitions, or seasonal events happening during the user's visit.\n\n# CORE WORKFLOW & RULES\n1.  **Introduction & Qualification:** Greet the user and immediately ask key questions to understand their plan:\n    - **Travel Dates** (Exact dates are CRITICAL for weather and events)\n    - **Duration** (Number of days)\n    - **Interests** (e.g., culture, food, hiking, family fun)\n    - **Budget** (e.g., budget, mid-range, luxury. This is a HARD CONSTRAINT.)\n    - **Travel Party** (solo, couple, family, etc.)\n\nIf you confirm the user can only provide partial information, you should feel free to any suggestion that match them.\n\n2.  **Tool Usage Strategy:** Based on the user's answers, plan which tools to call and in what order.\n    - **First, always call `Get Weather Info`** for their dates. Adjust plans accordingly (e.g., suggest indoor activities like museums if rain is forecast).\n    - **Then, call other tools** to build the plan (e.g., `Get Landmarks Info`, `Get Food Info`).\n    - **Always check `Get Transportation Info`** to ensure the locations you suggest are logically connected and convenient to travel between. Group activities by district.\n\n3.  **STRICT CONSTRAINTS (MUST ENFORCE):**\n    - **BUDGET:** If the user provides a budget, it is a HARD CONSTRAINT. You MUST use price information from your tools (`Get Food Info`, `Get Landmarks Info`, `Get Hotels Info`) to ensure all suggestions are within their budget. If an ideal item is over budget, say so and suggest a cheaper alternative.\n    - **TRANSPORTATION:** You MUST consider convenience. After drafting a plan, use `Get Transportation Info` to verify travel times and routes. Optimize the travel plan to minimize travel time between nearby attractions. Recommend the most efficient transport method (e.g., \"Take the MTR from Central to Tsim Sha Tsui; it's a 5-minute ride\").\n    - **WEATHER:** You MUST check the weather for the user's exact dates using `Get Weather Info`. Your final plan must be adapted to the forecast. If it rains, pivot to indoor activities. If it's hot, suggest shaded or air-conditioned spots.\n\n4.  **Output & Confirmation:** Present the plan clearly. For each day, list:\n    - Morning, Afternoon, and Evening activities.\n    - The specific location/attraction/restaurant (use details from your tools).\n    - The estimated cost and transportation method between activities.\n    - A note on why the plan suits their weather, budget, and interests.\n\n# EXAMPLE INTERACTION\nUser: \"I want to visit for 3 days with my partner next weekend. We love art and food. Our budget is mid-range.\"\nYou:\n[THINKING: User provided dates, duration, interests, and budget. I must get weather first. Then find art landmarks and mid-range food. Finally, check transportation links.]\n[ACTION: Call `Get Weather Info` for next weekend.]\n[ACTION: Call `Get Landmarks Info` for \"art museums galleries\".]\n[ACTION: Call `Get Food Info` for \"mid-range restaurants\" near the museums.]\n[ACTION: Call `Get Transportation Info` to connect the points.]\n[RESPONSE: \"Welcome! I've checked the weather for next weekend, and it looks sunny and warm—perfect for exploring! Based on your love for art and food, I've built a 3-day plan. I've ensured all activities are mid-range budget and that travel between them is convenient using the MTR...\"]\n\n# FINAL INSTRUCTIONS\nYou are empowered to use your tools as needed. Be a thoughtful planner. Always double-check constraints. If you cannot find information with your tools, be honest and tell the user.\n\nNow, thoughtfully assist the user by following your workflow: {{ $json.body.chatInput }}"
+        }
+      },
+      "id": "41174c8a-6ac8-42bd-900e-ca15196600c5",
+      "name": "Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        592,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "model": "llama3.1:latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        448,
+        256
+      ],
+      "id": "3f828c3c-f29d-45fd-b512-61476a8e0363",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "OstKz1fKyRZwXzDG",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.body.chatId }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        608,
+        256
+      ],
+      "id": "41301410-237b-4cc6-b810-fa8805723f02",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to Get Landmarks Info",
+        "workflowId": {
+          "__rl": true,
+          "value": "ZKrbS0L0qPbhq8mo",
+          "mode": "list",
+          "cachedResultName": "Get Landmarks Info"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {}
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        784,
+        256
+      ],
+      "id": "b149e6d6-7b36-46bc-9178-7e26f906d106",
+      "name": "Get Landmarks Info"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to Get Food Info",
+        "workflowId": {
+          "__rl": true,
+          "value": "OFPWwRkPJsJ7Vb9G",
+          "mode": "list",
+          "cachedResultName": "Get Food Info"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        944,
+        256
+      ],
+      "id": "bd88a9ac-76c0-4633-b3a0-6befbe9fa5fe",
+      "name": "Get Food Info"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to Get Transportation Info",
+        "workflowId": {
+          "__rl": true,
+          "value": "HCqLP9tu4jKRiOTq",
+          "mode": "list",
+          "cachedResultName": "Get Transportation Info"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1104,
+        256
+      ],
+      "id": "b6abd40d-44cb-4c35-80ca-3c4b7cbbf125",
+      "name": "Get Transportation Info"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to Get Weather Info",
+        "workflowId": {
+          "__rl": true,
+          "value": "kz3PxEAvXBH5epSl",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/kz3PxEAvXBH5epSl",
+          "cachedResultName": "Get Weather Info"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1280,
+        256
+      ],
+      "id": "37736b23-aac2-406f-895f-e4b0d665d10b",
+      "name": "Get Weather Info"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to Get Hotels Info",
+        "workflowId": {
+          "__rl": true,
+          "value": "DGBt5F4jZsaot6YY",
+          "mode": "list",
+          "cachedResultName": "Get Hotels Info"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        784,
+        416
+      ],
+      "id": "38dab0a6-c39a-414f-a1ec-18e8b13a1e1f",
+      "name": "Get Hotels Info"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to Get Shopping Info",
+        "workflowId": {
+          "__rl": true,
+          "value": "RaQRkaaO7u94NWQ8",
+          "mode": "list",
+          "cachedResultName": "Get Shopping Info"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        944,
+        416
+      ],
+      "id": "aea4f9d5-c32d-44fe-9738-d810a999849e",
+      "name": "Get Shopping Info"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to Get Special Events Info",
+        "workflowId": {
+          "__rl": true,
+          "value": "MDkUGY8k8PFvKx3a",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/MDkUGY8k8PFvKx3a",
+          "cachedResultName": "Get Special Events Info"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1104,
+        416
+      ],
+      "id": "e9af75e5-360f-4aa8-bd6a-6adefc5817d7",
+      "name": "Get Special Events Info"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "travel-ai",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        368,
+        32
+      ],
+      "id": "8b4c4036-e189-47df-8808-3062ff6148ee",
+      "name": "Webhook",
+      "webhookId": "782ecac5-1955-4c93-99c2-2451f0368c10"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        944,
+        32
+      ],
+      "id": "b2bfe610-06db-440b-9442-1f6a9fe7cd5d",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Landmarks Info": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Food Info": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Transportation Info": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Weather Info": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Hotels Info": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Shopping Info": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Special Events Info": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b38df38a-4f62-4cca-803e-b63107510bdd",
+  "meta": {
+    "templateId": "self-building-ai-agent",
+    "templateCredsSetupCompleted": true,
+    "instanceId": "47827cfb2f0fd42cf7d65f80c15f5a25826677d9389942bc8cab5ca0b3c9777d"
+  },
+  "id": "I7c9sa5Zmnn1lcHx",
+  "tags": []
+}

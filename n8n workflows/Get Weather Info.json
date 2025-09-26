@@ -1,0 +1,125 @@
+{
+  "name": "Get Weather Info",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "id": "c055762a-8fe7-4141-a639-df2372f30060",
+      "typeVersion": 1.1,
+      "name": "When Executed by Another Workflow",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        400,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# User message\n{{ $json.query }}",
+        "options": {
+          "systemMessage": "=You are an AI Weather Assistant specialized in providing accurate, real-time weather information for Hong Kong, sourced exclusively from the Hong Kong Observatory (HKO).\n\nCall the tool \"Get-Hong-Kong-Observatory-Info\" to get the weather information of that date. You must use the tool to retrieve the latest data before answering any query. \n\nDo not rely on cached or outdated knowledge."
+        }
+      },
+      "id": "a57733da-4b9d-4498-a311-470b6eb7bb22",
+      "name": "Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        624,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "model": "llama3.1:latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        608,
+        560
+      ],
+      "id": "f3240fc1-47ce-4285-8133-a0a04c2b3af3",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "OstKz1fKyRZwXzDG",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Get Hong Kong Observatory Info",
+        "url": "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=en",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        768,
+        560
+      ],
+      "id": "13087aeb-aaf7-45f4-a885-e02146521189",
+      "name": "Get-Hong-Kong-Observatory-Info"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "query": "Sept 26"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get-Hong-Kong-Observatory-Info": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "46253421-c966-4523-a432-263f26fe6f77",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "47827cfb2f0fd42cf7d65f80c15f5a25826677d9389942bc8cab5ca0b3c9777d"
+  },
+  "id": "kz3PxEAvXBH5epSl",
+  "tags": []
+}

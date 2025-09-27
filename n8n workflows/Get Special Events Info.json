@@ -1,0 +1,123 @@
+{
+  "name": "Get Special Events Info",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "id": "b9569e8f-0e91-4f48-9e41-e9e36fa0c555",
+      "typeVersion": 1.1,
+      "name": "When Executed by Another Workflow",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        176,
+        -48
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.query }}",
+        "options": {
+          "systemMessage": "=You are an Event Assistant AI specialized in providing accurate, interesting special events information for Hong Kong, sourced exclusively from the Hong Kong Tourism Board.\n\nUsers may provide their areas of interests or travel dates. You must call the tool \"Get-Hong-Kong-Event-Info\" to get the special events information, and suggest some suitable events for users. You must use the tool to retrieve the latest data before answering any query. \n\nDo not rely on cached or outdated knowledge."
+        }
+      },
+      "id": "67244ffb-c8b4-4276-aced-72d96a69065a",
+      "name": "Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        400,
+        -48
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        368,
+        192
+      ],
+      "id": "c97317a0-d8f8-4b09-ae10-802988379ea7",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "CHwRoEqp9IEPT54g",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Get Hong Kong Event Info",
+        "url": "=https://www.discoverhongkong.com/eng/what-s-new/events/_jcr_content/root/responsivegrid/container/container_copy_copy_/dataviewcontainer.data.json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        544,
+        192
+      ],
+      "id": "05e3285a-1b48-46b0-8af5-3182f68e7d83",
+      "name": "Get-Hong-Kong-Event-Info"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "query": "Any special events on 27 Sept?"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get-Hong-Kong-Event-Info": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a429636e-de56-4623-bc20-9d658d270e94",
+  "meta": {
+    "instanceId": "47827cfb2f0fd42cf7d65f80c15f5a25826677d9389942bc8cab5ca0b3c9777d"
+  },
+  "id": "MDkUGY8k8PFvKx3a",
+  "tags": []
+}

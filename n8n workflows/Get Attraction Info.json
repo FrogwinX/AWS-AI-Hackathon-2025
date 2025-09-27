@@ -1,50 +1,35 @@
 {
-  "name": "Get Weather Info",
+  "name": "Get Attraction Info",
   "nodes": [
     {
       "parameters": {
         "inputSource": "passthrough"
       },
-      "id": "c055762a-8fe7-4141-a639-df2372f30060",
+      "id": "863b0b4a-0631-4c3c-a445-95406cdf5166",
       "typeVersion": 1.1,
       "name": "When Executed by Another Workflow",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "position": [
-        400,
-        336
+        176,
+        -128
       ]
     },
     {
       "parameters": {
         "promptType": "define",
-        "text": "=# User message\n{{ $json.query }}",
+        "text": "={{ $json.query }}",
         "options": {
-          "systemMessage": "=You are an AI Weather Assistant specialized in providing accurate, real-time weather information for Hong Kong, sourced exclusively from the Hong Kong Observatory (HKO).\n\nCall the tool \"Get-Hong-Kong-Observatory-Info\" to get the weather information of that date. You must use the tool to retrieve the latest data before answering any query. \n\nDo not rely on cached or outdated knowledge."
+          "systemMessage": "=You are an <> Assistant AI specialized in providing accurate, interesting <> information for Hong Kong, sourced exclusively from the Hong Kong Tourism Board.\n\nUsers may provide their areas of interests or travel dates. You must call the tool \"<>\" to get the <> for users. You must use the tool to retrieve the latest data before answering any query.\n\nDo not rely on cached or outdated knowledge."
         }
       },
-      "id": "a57733da-4b9d-4498-a311-470b6eb7bb22",
+      "id": "03a485c4-fecb-4237-9cca-55f65c14bed1",
       "name": "Agent",
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        624,
-        336
+        400,
+        -128
       ]
-    },
-    {
-      "parameters": {
-        "toolDescription": "Get Hong Kong Observatory Info",
-        "url": "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=en",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
-      "position": [
-        768,
-        560
-      ],
-      "id": "13087aeb-aaf7-45f4-a885-e02146521189",
-      "name": "Get-Hong-Kong-Observatory-Info"
     },
     {
       "parameters": {
@@ -53,10 +38,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        592,
-        560
+        368,
+        112
       ],
-      "id": "246d63c1-4e8b-4402-95e1-f20bc9947ff8",
+      "id": "69da876d-eab6-47ce-8673-922f38fd16d4",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
@@ -64,13 +49,28 @@
           "name": "Google Gemini(PaLM) Api account"
         }
       }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Get Hong Kong Shopping Info",
+        "url": "=",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        544,
+        112
+      ],
+      "id": "b86ae48b-cfa4-4552-8546-4f16a32e81af",
+      "name": "Get-Hong-Kong-<>-Info"
     }
   ],
   "pinData": {
     "When Executed by Another Workflow": [
       {
         "json": {
-          "query": "Sept 30"
+          "query": "Any special events on 27 Sept?"
         }
       }
     ]
@@ -87,17 +87,6 @@
         ]
       ]
     },
-    "Get-Hong-Kong-Observatory-Info": {
-      "ai_tool": [
-        [
-          {
-            "node": "Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Google Gemini Chat Model": {
       "ai_languageModel": [
         [
@@ -108,17 +97,27 @@
           }
         ]
       ]
+    },
+    "Get-Hong-Kong-<>-Info": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "41e1a9ce-6f7f-4be2-95e7-8a36c78d11c1",
+  "versionId": "350992ef-5fa0-418a-bd6c-204226765b5e",
   "meta": {
-    "templateCredsSetupCompleted": true,
     "instanceId": "47827cfb2f0fd42cf7d65f80c15f5a25826677d9389942bc8cab5ca0b3c9777d"
   },
-  "id": "kz3PxEAvXBH5epSl",
+  "id": "ZKrbS0L0qPbhq8mo",
   "tags": []
 }

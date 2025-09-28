@@ -5,8 +5,8 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'AlgoBot | AI Agentic Chatbot & Security Solutions',
-  description: 'Complete WealthTech Solution for Financial Institutions',
+  title: 'Hong Kong Travel Chat Bot | AI Travel Guide',
+  description: 'Your intelligent companion for exploring Hong Kong - get personalized recommendations, itineraries, and travel tips',
   icons: '/favicon.ico',
 };
 

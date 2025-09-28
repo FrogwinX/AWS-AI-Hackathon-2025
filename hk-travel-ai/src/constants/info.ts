@@ -1,168 +1,68 @@
-import { BankProps, BANKS } from "./bank";
+import { TravelGuideProps, TRAVEL_GUIDES } from "./travel";
 
-export const SOLUTIONS = (selectedBank: BankProps) => {
-  const bankInfo = BANKS(selectedBank).bank;
+export const SOLUTIONS = (selectedGuide: TravelGuideProps) => {
+  const guideInfo = TRAVEL_GUIDES(selectedGuide).guide;
   return {
-    retailChatbot: {
-      title: `${bankInfo.initial} Retail AI Chatbot`
-    },
-    wealthChatbot: {
-      title: `${bankInfo.initial} Wealth AI Agent`,
-      capabilities: ["Real-time News", "Personalization", "Multi-asset"],
-    },
-    hardware: {
-      title: "Hardware Security Solutions",
-      capabilities: ["ML-Powered", "IoT Protection", "Silent Design"],
-      overview: {
-        title: "Palo Alto PA-410 Next-Gen Firewall",
-        description: "The world's first ML-powered NGFW designed to protect unknown threats, secure everything including IoT devices, and reduce errors with automatic policy recommendations."
-      },
-      cards: [
-        {
-          icon: "shield-alt",
-          title: "Advanced Threat Protection",
-          content: "Machine learning-powered security that identifies and blocks unknown threats before they can impact your infrastructure.",
-          features: [
-            "Real-time threat intelligence",
-            "Automated policy recommendations",
-            "Behavioral analytics"
-          ]
-        },
-        {
-          icon: "network-wired",
-          title: "IoT & Infrastructure Security",
-          content: "Comprehensive protection for all connected devices including IoT endpoints and legacy systems.",
-          features: [
-            "Full visibility into all devices",
-            "Automated device classification",
-            "Segmentation for IoT networks"
-          ]
-        },
-        {
-          icon: "cogs",
-          title: "Professional Services",
-          content: "Complete implementation and configuration services for seamless deployment.",
-          features: [
-            "On-premise hardware installation",
-            "Customized configuration",
-            "Initial policy setup",
-            "Silent, fanless operation"
-          ]
-        }
-      ]
-    },
-    security: {
-      title: "Cybersecurity Solutions",
-      capabilities: ["Assessment", "Response", "Protection"],
-      cards: [
-        {
-          icon: "search",
-          title: "Vulnerability Assessment",
-          content: "Comprehensive security scanning of your staging environment to identify and prioritize vulnerabilities.",
-          scope: "Thorough vulnerability scan using industry-standard tools",
-          featureTitle: "Scope of Work:",
-          features: [
-            { icon: "tick", description: "Thorough vulnerability scan using industry-standard tools" },
-            { icon: "tick", description: "Full coverage of all systems and applications" },
-            { icon: "tick", description: "Detailed findings summary with risk ratings" },
-            { icon: "tick", description: "Prioritized remediation recommendations" }
-          ],
-          deliverables: [
-            "Detailed list of identified vulnerabilities",
-            "Risk ratings for each vulnerability",
-            "Recommended remediation steps",
-            "Prioritization of actions based on risk levels"
-          ],
-          included: [
-            "One-time vulnerability scan",
-            "NTT staging environment",
-            "Application server coverage"
-          ],
-          excluded: [
-            "Ongoing monitoring",
-            "Remediation efforts",
-            "Environments outside NTT staging"
-          ]
-        },
-        {
-          icon: "headset",
-          title: "Managed Detection & Response",
-          content: "24/7 cybersecurity incident triage and response service with SentinelOne Vigilance.",
-          featureTitle: "Service Features:",
-          features: [
-            { icon: "eye", description: "Continuous monitoring and alert management" },
-            { icon: "filter", description: "False positive identification and filtering" },
-            { icon: "shield", description: "Threat actor pattern analysis using S1 and sandbox platforms" },
-            { icon: "exclamationTriangle", description: "Incident escalation to IR providers when necessary" },
-            { icon: "clipboardList", description: "SOP-based SentinelOne operations" },
-            { icon: "list", description: "Whitelist/Blacklist management" },
-            { icon: "laptop", description: "Remote endpoint checking and remediation" }
-          ],
-          subscription: [
-            "1-year subscription",
-            "Supports as little as 1 workload/server",
-            "Flexible scaling options"
-          ]
-        }
-      ]
+    travelChatbot: {
+      title: `${guideInfo.initial} Travel AI Chatbot`
     },
     logic: {
-      title: "Product Logic and Compliance",
+      title: "Travel Guide Features and Capabilities",
       capabilities: ["1", "2", "3"],
       cards: [
         {
-          title: "Compliant Chatbot Architecture",
-          content: "Our solution addresses regulatory requirements by separating functionality between retail and wealth management chatbots:",
+          title: "Intelligent Travel Assistant Architecture",
+          content: "Our solution provides comprehensive Hong Kong travel guidance through specialized AI assistants:",
           architectureStep: [
             {
               number: 1,
-              title: "Client Portfolio Monitoring",
-              description: `${bankInfo.initial} Retail AI continuously monitors client portfolios and market news`
+              title: "Travel Preference Learning",
+              description: `${guideInfo.initial} Travel AI learns your preferences and travel style`
             },
             {
               number: 2,
-              title: "Relevant Event Detection",
-              description: "AI detects significant events for held stocks (earnings reports, news, price movements)"
+              title: "Real-time Information",
+              description: "AI accesses current weather, events, transportation, and attraction status"
             },
             {
               number: 3,
-              title: "Client Notification",
-              description: "Retail client receives notification with option to request RM advice"
+              title: "Personalized Recommendations",
+              description: "Receive tailored suggestions based on your interests and current location"
             },
             {
               number: 4,
-              title: "Request Escalation",
-              description: `Request is sent to ${bankInfo.initial} Wealth AI with client context and relevant data`
+              title: "Premium Upgrade Option",
+              description: `Upgrade to ${guideInfo.initial} Premium for detailed itineraries and exclusive insights`
             },
             {
               number: 5,
-              title: "RM Advisory",
-              description: "Relationship Manager receives request with AI-generated recommendations"
+              title: "Continuous Support",
+              description: "24/7 travel assistance with multilingual support throughout your Hong Kong journey"
             }
           ]
         },
         {
-          title: "Compliance Safeguards",
+          title: "Travel Guide Benefits",
           complianceSafeguards: [
             {
-              icon: "ban",
-              title: "Recommendation Separation",
-              description: "Investment recommendations are only provided through the Wealth AI platform to licensed relationship managers, never directly to retail clients."
+              icon: "map-marked-alt",
+              title: "Local Expertise",
+              description: "Access insider knowledge about Hong Kong's hidden gems, local customs, and authentic experiences beyond typical tourist spots."
             },
             {
-              icon: "clipboard-check",
-              title: "Audit Trails",
-              description: "All client interactions and RM recommendations are fully logged with timestamps for compliance auditing."
+              icon: "clock",
+              title: "Real-time Updates",
+              description: "Get live information about transportation delays, weather changes, event schedules, and attraction wait times."
             },
             {
-              icon: "user-lock",
-              title: "Client Protection",
-              description: "Retail clients receive portfolio alerts without direct investment advice, eliminating compliance risk for the bank."
+              icon: "language",
+              title: "Multilingual Support",
+              description: "Communicate in English, Traditional Chinese, Simplified Chinese, or Arabic with seamless translation assistance."
             },
             {
-              icon: "file-contract",
-              title: "Disclosure Automation",
-              description: "All RM communications include required regulatory disclosures automatically appended by the system."
+              icon: "mobile-alt",
+              title: "Offline Capability",
+              description: "Download essential information for offline access, ensuring you're never lost even without internet connection."
             }
           ],
         }
@@ -171,34 +71,34 @@ export const SOLUTIONS = (selectedBank: BankProps) => {
         title: "Features",
         items: [
           {
-            feature: "Stock Buy/Sell Recommendations",
-            wealth: { available: true, text: "Full Details" },
-            retail: { available: false, text: "Not Available" }
+            feature: "Detailed Itinerary Planning",
+            premium: { available: true, text: "Full Details" },
+            travel: { available: false, text: "Basic Only" }
           },
           {
-            feature: "Entry/Target/Stop Loss Pricing",
-            wealth: { available: true, text: "Full Details" },
-            retail: { available: false, text: "Not Available" }
+            feature: "Restaurant Reservations",
+            premium: { available: true, text: "Full Service" },
+            travel: { available: false, text: "Recommendations Only" }
           },
           {
-            feature: "Portfolio-Linked News Alerts",
-            wealth: { available: true, text: "Available" },
-            retail: { available: true, text: "Available" }
+            feature: "Attraction Information",
+            premium: { available: true, text: "Available" },
+            travel: { available: true, text: "Available" }
           },
           {
-            feature: "Bank Product Information",
-            wealth: { available: true, text: "Full Details" },
-            retail: { available: true, text: "Full Details" }
+            feature: "Transportation Guidance",
+            premium: { available: true, text: "Full Details" },
+            travel: { available: true, text: "Full Details" }
           },
           {
-            feature: "Client Request Management",
-            wealth: { available: true, text: "Process Responses" },
-            retail: { available: true, text: "Initiate Requests" }
+            feature: "Emergency Assistance",
+            premium: { available: true, text: "24/7 Support" },
+            travel: { available: true, text: "Basic Support" }
           },
           {
-            feature: "Personalized Portfolio Insights",
-            wealth: { available: true, text: "Advanced Analytics" },
-            retail: { available: true, text: "Basic Overview" }
+            feature: "Cultural Insights",
+            premium: { available: true, text: "Deep Insights" },
+            travel: { available: true, text: "Basic Overview" }
           }
         ]
       }
@@ -209,66 +109,49 @@ export const SOLUTIONS = (selectedBank: BankProps) => {
 export const KEY_CAPABILITIES = [
   {
     icon: "brain",
-    title: "Adaptive Memory",
-    description: "Learns client behavior & risk profile with 92% suitability accuracy"
+    title: "Smart Recommendations",
+    description: "AI learns your preferences with 95% accuracy for personalized suggestions"
   },
   {
     icon: "bolt",
-    title: "Quant + LLM Fusion",
-    description: "Blends algorithms & real-time news in <700ms response time"
+    title: "Real-time Updates",
+    description: "Live data integration with <500ms response time for current information"
   },
   {
     icon: "chart-line",
-    title: "Auto-Trade Catalyst",
-    description: "Triggers personalized trades increasing volume by 33%"
+    title: "Dynamic Routing",
+    description: "Optimized travel routes increasing efficiency by 40%"
   },
   {
     icon: "globe",
     title: "Multi-lingual Support",
-    description: "English, Mandarin, Cantonese with real-time translation"
+    description: "English, Traditional Chinese, Simplified Chinese, Arabic with real-time translation"
   }
 ];
 
 export const STATS = [
-  { value: "40%", label: "Admin Time Saved" },
-  { value: "92%", label: "Suitability Accuracy" },
-  { value: "33%", label: "Trade Volume Increase" },
-  { value: "4%", label: "Return Improvement" }
+  { value: "50%", label: "Planning Time Saved" },
+  { value: "95%", label: "Recommendation Accuracy" },
+  { value: "40%", label: "Route Efficiency" },
+  { value: "24/7", label: "Support Availability" }
 ];
 
 export const CHATBOT_FEATURES = {
-  retail: [
+  travel: [
     {
-      title: "Regulatory Compliance",
-      description: "Retail clients receive portfolio alerts without direct investment advice, ensuring full compliance with financial regulations.",
+      title: "Local Expertise",
+      description: "Get authentic Hong Kong experiences with insider knowledge about local customs, hidden gems, and cultural insights.",
       icon: "gavel"
     },
     {
-      title: "Personalized Alerts",
-      description: "Clients receive automated notifications about stocks they hold, with relevant news and market movements.",
+      title: "Smart Recommendations",
+      description: "Receive personalized suggestions based on your interests, budget, and travel style for attractions, dining, and activities.",
       icon: "bell"
     },
     {
-      title: "Seamless Escalation",
-      description: "One-click connection to relationship managers for personalized advice when clients need it most.",
+      title: "Real-time Assistance",
+      description: "Access live information about transportation, weather, events, and attraction status throughout your journey.",
       icon: "exchangeAlt"
-    }
-  ],
-  wealth: [
-    {
-      title: "Increased Productivity",
-      description: "Reduce time spent on research by 40% with AI-generated recommendations and insights tailored to each client's portfolio.",
-      icon: "chartLine"
-    },
-    {
-      title: "Compliance Assurance",
-      description: "All recommendations include required disclosures and are logged for audit purposes with timestamped client interactions.",
-      icon: "shieldAlt"
-    },
-    {
-      title: "Revenue Growth",
-      description: "Identify 3x more revenue opportunities with AI-powered client portfolio analysis and timely investment signals.",
-      icon: "moneyBillWave"
     }
   ]
 };

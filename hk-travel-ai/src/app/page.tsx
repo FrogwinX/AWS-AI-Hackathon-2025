@@ -2,8 +2,8 @@
 
 import Home from "@/components/Home";
 
-export default function BOCDemo() {
+export default function HKTravelGuide() {
   return (
-      <Home selectedBank={{bankType: "BOC"}}/>
+      <Home selectedGuide={{guideType: "GENERAL"}}/>
   );
 }

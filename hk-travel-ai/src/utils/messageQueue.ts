@@ -1,11 +1,10 @@
 import { getChatbotMessage } from "@/app/api/agenticChatbot";
-import { BANKS } from "@/constants/bank";
 import { Language } from "@/constants/chatbotMessage";
 
-type WealthCallback = (message: WealthMessage) => void;
-type RetailCallback = (message: RetailMessage) => void;
+type PremiumCallback = (message: PremiumMessage) => void;
+type TravelCallback = (message: TravelMessage) => void;
 
-export interface RetailMessage {
+export interface TravelMessage {
   chatbotId: string;
   messageId: string;
   parentMessageId?: string;
@@ -18,7 +17,7 @@ export interface RetailMessage {
   showFollowUp?: boolean;
 }
 
-export interface WealthMessage {
+export interface PremiumMessage {
   chatbotId: string;
   messageId: string;
   originalMessageId: string;
@@ -34,30 +33,34 @@ export interface WealthMessage {
   reply: string;
 }
 
-class MessageQueue {
-  private callbackToWealth: WealthCallback[] = [];
-  private callbackToRetail: RetailCallback[] = [];
+// Keep RetailMessage for backward compatibility
+export interface RetailMessage extends TravelMessage {}
+export interface WealthMessage extends PremiumMessage {}
 
-  /* From Retail To Wealth */
-  subscribeRetail(callback: WealthCallback) {
-    this.callbackToWealth.push(callback);
+class MessageQueue {
+  private callbackToPremium: PremiumCallback[] = [];
+  private callbackToTravel: TravelCallback[] = [];
+
+  /* From Travel To Premium */
+  subscribeTravel(callback: PremiumCallback) {
+    this.callbackToPremium.push(callback);
     return () => {
-      this.callbackToWealth = this.callbackToWealth.filter(cb => cb !== callback);
+      this.callbackToPremium = this.callbackToPremium.filter(cb => cb !== callback);
     };
   }
 
-  async publishWealth(message: RetailMessage, chatId: string) {
+  async publishPremium(message: TravelMessage, chatId: string) {
     const formData = new FormData();
     formData.append("chatInput", message.text);
     formData.append("lang", message.lang!);
-    formData.append("from", `${BANKS().bank.initial} Wealth`);
+    formData.append("from", "HK Premium Guide");
     formData.append("chatId", chatId);
     const response = await getChatbotMessage(formData);
-    this.callbackToWealth.forEach(callbackToWealth => callbackToWealth({
+    this.callbackToPremium.forEach(callbackToPremium => callbackToPremium({
       chatbotId: message.chatbotId,
       messageId: Date.now().toString(),
       originalMessageId: message.messageId,
-      username: 'Customer',
+      username: 'Traveler',
       userQuery: response.query,
       originalAudioUrl: message.audioUrl || null,
       aiAnswer: response.answer,
@@ -69,16 +72,16 @@ class MessageQueue {
     }));
   }
 
-  /* From Wealth To Retail */
-  subscribeWealth(callback: RetailCallback) {
-    this.callbackToRetail.push(callback);
+  /* From Premium To Travel */
+  subscribePremium(callback: TravelCallback) {
+    this.callbackToTravel.push(callback);
     return () => {
-      this.callbackToRetail = this.callbackToRetail.filter(cb => cb !== callback);
+      this.callbackToTravel = this.callbackToTravel.filter(cb => cb !== callback);
     };
   }
 
-  async publishRetail(message: WealthMessage) {
-    this.callbackToRetail.forEach(callbackToRetail => callbackToRetail({
+  async publishTravel(message: PremiumMessage) {
+    this.callbackToTravel.forEach(callbackToTravel => callbackToTravel({
       chatbotId: message.chatbotId,
       messageId: message.messageId,
       parentMessageId: message.originalMessageId,
@@ -91,6 +94,12 @@ class MessageQueue {
       showFollowUp: false
     }));
   }
+
+  // Backward compatibility methods
+  subscribeRetail = this.subscribeTravel;
+  publishWealth = this.publishPremium;
+  subscribeWealth = this.subscribePremium;
+  publishRetail = this.publishTravel;
 }
 
 export const messageQueue = new MessageQueue();

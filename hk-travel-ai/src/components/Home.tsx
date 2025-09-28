@@ -4,47 +4,40 @@ import { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import SolutionTabs from '@/components/SolutionTabs';
 import RetailChatPanel from '@/components/RetailChatPanel';
-import HardwarePanel from '@/components/HardwarePanel';
-import SecurityPanel from '@/components/SecurityPanel';
-import Footer from '@/components/Footer';
-import TrustedBy from '@/components/TrustedBy';
+
 import LogicPanel from '@/components/LogicPanel';
-import WealthChatPanel from '@/components/WealthChatPanel';
 import ChatbotFeature from '@/components/ChatbotFeature';
-import { BankProps } from '@/constants/bank';
+import TripPlannerPanel from '@/components/TripPlanner/TripPlannerPanel';
+import { TravelGuideProps } from '@/constants/travel';
+import { TripPlanProvider } from '@/contexts/TripPlanContext';
 
-export default function Home({ selectedBank } : { selectedBank: BankProps }) {
+export default function Home({ selectedGuide } : { selectedGuide: TravelGuideProps }) {
 
-  const [activeTab, setActiveTab] = useState('retail-chat');
-  const [retailChatId, setRetailChatId] = useState(Date.now().toString());
-  const [wealthChatId, setWealthChatId] = useState((Date.now() + 1).toString());
+  const [activeTab, setActiveTab] = useState('travel-chat');
+  const [travelChatId, setTravelChatId] = useState(Date.now().toString());
 
   return (
-    <>
+    <TripPlanProvider>
       <Header />
-      <SolutionTabs activeTab={activeTab} setActiveTab={setActiveTab} selectedBank={selectedBank} />
+      <SolutionTabs activeTab={activeTab} setActiveTab={setActiveTab} selectedGuide={selectedGuide} />
 
       <div className="flex-1 px-4 sm:px-8 py-4 mx-auto w-full h-full flex flex-col gap-6">
         <div className="flex flex-col lg:flex-row gap-4 w-full h-full">
           <div className="flex-1 flex flex-col h-full">
-            <LogicPanel isActive={activeTab === 'product-logic'} selectedBank={selectedBank} />
-            <RetailChatPanel isActive={activeTab === 'retail-chat'} chatId={retailChatId} selectedBank={selectedBank} />
-            <WealthChatPanel isActive={activeTab === 'wealth-chat'} chatId={wealthChatId} selectedBank={selectedBank} />
-            <HardwarePanel isActive={activeTab === 'hardware-solution'} selectedBank={selectedBank} />
-            <SecurityPanel isActive={activeTab === 'security-solution'} selectedBank={selectedBank} />
+            <LogicPanel isActive={activeTab === 'guide-features'} selectedGuide={selectedGuide} />
+            <RetailChatPanel isActive={activeTab === 'travel-chat'} chatId={travelChatId} selectedGuide={selectedGuide} />
+            <TripPlannerPanel isActive={activeTab === 'trip-planner'} selectedGuide={selectedGuide} />
           </div>
         </div>
-        {(activeTab === 'retail-chat' || activeTab === 'wealth-chat') &&
+        {activeTab === 'travel-chat' &&
           <div className="flex flex-row lg:flex-row gap-4 w-full">
-            <ChatbotFeature isRetail={activeTab === 'retail-chat'} />
+            <ChatbotFeature isTravel={true} />
           </div>
         }
-        <div className="flex flex-row lg:flex-row gap-4 w-full">
-          <TrustedBy />
-        </div>
+
       </div>
 
-      <Footer />
-    </>
+
+    </TripPlanProvider>
   );
 }

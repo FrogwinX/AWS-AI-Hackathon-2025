@@ -1,85 +1,105 @@
-import { BankProps, BANKS } from "./bank";
+import { TravelGuideProps, TRAVEL_GUIDES } from "./travel";
 
 export const LANGUAGES = {
   TRADITIONAL_CHINESE: { display: "繁", alias: "繁體中文" },
   SIMPLIFIED_CHINESE: { display: "简", alias: "简体中文" },
   ENGLISH: { display: "ENG", alias: "English" },
-  ARABIC: { display: "AR", alias: "عربي" }
+  ARABIC: { display: "AR", alias: "عربي" },
 } as const;
 
 export type Language = keyof typeof LANGUAGES;
 
-export const DEFAULT_MESSAGES = (selectedBank: BankProps) => {
-  const bankInfo = BANKS(selectedBank).bank;
+export const DEFAULT_MESSAGES = (selectedGuide: TravelGuideProps) => {
+  const guideInfo = TRAVEL_GUIDES(selectedGuide).guide;
   return {
     TRADITIONAL_CHINESE: {
       text:
-        `尊敬的客戶，您好！👋 我是${bankInfo.traditionalChinese}智能助手 Finbot。\n` +
-        "我們致力於為您提供精準的銀行資訊與金融市場分析：\n\n" +
-        "🏦 **銀行產品資訊**\n" + `- 提供${bankInfo.traditionalChinese}產品服務詳解\n\n` +
-        "🔍 **各類型股票研究**\n" + "- 深度解析個股基本面\n\n" +
-        "📊 **專業圖表技術分析**\n" + "- 機構級市場趨勢判讀\n\n" +
-        "📰 **精選財經快訊**\n" + "- 即時市場動態追蹤\n\n" +
-        "⚡️ **AI 交易信號系統 (AO Summit)**\n" + "- 基於智能AI的投資策略建議\n\n" +
-        "我隨時為您解答銀行和金融相關問題，助您做出明智決策。😊",
+        `歡迎來到香港！👋 我是您的${guideInfo.traditionalChinese}智能助手。\n` +
+        "我將為您提供最全面的香港旅遊資訊和建議：\n\n" +
+        "🏛️ **景點推薦**\n" +
+        "- 熱門景點、隱藏寶石和文化地標\n\n" +
+        "🍜 **美食指南**\n" +
+        "- 茶餐廳、米其林餐廳和街頭小食\n\n" +
+        "🚇 **交通攻略**\n" +
+        "- 地鐵、巴士、電車和渡輪指南\n\n" +
+        "🛍️ **購物天堂**\n" +
+        "- 商場、市集和特色店鋪推薦\n\n" +
+        "🎭 **文化體驗**\n" +
+        "- 節慶活動、博物館和傳統文化\n\n" +
+        "我隨時為您解答香港旅遊相關問題，讓您的香港之旅更加精彩！😊",
       suggestions: [
-        "獲取最新市場新聞",
-        "獲取 ? 股票圖表分析",
-        `${bankInfo.traditionalChinese}最新消息`,
-        `${bankInfo.traditionalChinese}產品服務介紹`,
-        `${bankInfo.traditionalChinese}簡介`
-      ]
+        "推薦香港必去景點",
+        "香港美食推薦",
+        "如何使用香港交通",
+        "香港購物指南",
+        "香港文化體驗",
+      ],
     },
     SIMPLIFIED_CHINESE: {
       text:
-        `尊敬的客户，您好！👋 我是${bankInfo.simplifiedChinese}智能助手 Finbot。\n` +
-        "我们致力于为您提供精准的银行资讯与金融市场分析：\n\n" +
-        "🏦 **银行产品资讯**\n" + `- 提供${bankInfo.simplifiedChinese}产品服务详解\n\n` +
-        "🔍 **各类型股票研究**\n" + "- 深度解析个股基本面\n\n" +
-        "📊 **专业图表技术分析**\n" + "- 机构级市场趋势判读\n\n" +
-        "📰 **精选财经快讯**\n" + "- 即时市场动态追踪\n\n" +
-        "⚡️ **AI 交易信号系统 (AO Summit)**\n" + "- 基于智能AI的投资策略建议\n\n" +
-        "我随时为您解答银行和金融相关问题，助您做出明智决策。😊",
+        `欢迎来到香港！👋 我是您的${guideInfo.simplifiedChinese}智能助手。\n` +
+        "我将为您提供最全面的香港旅游资讯和建议：\n\n" +
+        "🏛️ **景点推荐**\n" +
+        "- 热门景点、隐藏宝石和文化地标\n\n" +
+        "🍜 **美食指南**\n" +
+        "- 茶餐厅、米其林餐厅和街头小食\n\n" +
+        "🚇 **交通攻略**\n" +
+        "- 地铁、巴士、电车和渡轮指南\n\n" +
+        "🛍️ **购物天堂**\n" +
+        "- 商场、市集和特色店铺推荐\n\n" +
+        "🎭 **文化体验**\n" +
+        "- 节庆活动、博物馆和传统文化\n\n" +
+        "我随时为您解答香港旅游相关问题，让您的香港之旅更加精彩！😊",
       suggestions: [
-        "获取最新市场新闻",
-        "获取 ? 股票图表分析",
-        `${bankInfo.simplifiedChinese}最新消息`,
-        `${bankInfo.simplifiedChinese}产品服务介绍`,
-        `${bankInfo.simplifiedChinese}简介`
-      ]
+        "推荐香港必去景点",
+        "香港美食推荐",
+        "如何使用香港交通",
+        "香港购物指南",
+        "香港文化体验",
+      ],
     },
     ENGLISH: {
       text:
-        `Dear Valued Client, 👋 I am Finbot, your ${bankInfo.english} Intelligent Assistant.\n` +
-        "We are committed to providing accurate banking information and financial market analysis:\n\n" +
-        "🏦 **Banking Product Information**\n" + `- Detailed ${bankInfo.english} product services\n\n` +
-        "🔍 **Multi-category Stock Research**\n" + "- In-depth fundamental analysis of individual stocks\n\n" +
-        "📊 **Professional Chart Technical Analysis**\n" + "- Institutional-grade market trend interpretation\n\n" +
-        "📰 **Curated Financial News**\n" + "- Real-time market dynamics tracking\n\n" +
-        "⚡️ **AI Trading Signal System (AO Summit)**\n" + "- AI-driven investment strategy recommendations\n\n" +
-        "I am available anytime to address banking and financial inquiries and support your informed decision-making.😊",
+        `Welcome to Hong Kong! 👋 I am your ${guideInfo.english} AI Assistant.\n` +
+        "I'm here to provide comprehensive Hong Kong travel information and recommendations:\n\n" +
+        "🏛️ **Attractions Guide**\n" +
+        "- Popular spots, hidden gems, and cultural landmarks\n\n" +
+        "🍜 **Food & Dining**\n" +
+        "- Cha chaan tengs, Michelin restaurants, and street food\n\n" +
+        "🚇 **Transportation**\n" +
+        "- MTR, buses, trams, and ferry guides\n\n" +
+        "🛍️ **Shopping Paradise**\n" +
+        "- Malls, markets, and specialty stores\n\n" +
+        "🎭 **Cultural Experiences**\n" +
+        "- Festivals, museums, and traditional culture\n\n" +
+        "I'm here to answer all your Hong Kong travel questions and make your trip unforgettable! 😊",
       suggestions: [
-        "Access latest market news",
-        "Get ? stock chart analysis",
-        `${bankInfo.english} latest updates`,
-        `${bankInfo.english} product services introduction`,
-        `${bankInfo.english} overview`
-      ]
+        "Recommend must-visit attractions",
+        "Hong Kong food recommendations",
+        "How to use Hong Kong transport",
+        "Hong Kong shopping guide",
+        "Cultural experiences in Hong Kong",
+      ],
     },
-    /* Not Updated */
     ARABIC: {
       text:
-        "مرحبًا! 👋 أنا آلجوبوت، مساعدك المالي المدعوم بالذكاء الاصطناعي!\nأنا متخصص في تقديم استخبارات السوق الدقيقة:\n\n" +
-        "🔍 **تحليل أسهم شامل**\n" + "- رؤى متعمقة حول الأسهم\n\n" +
-        "📊 **تحليل الرسوم البيانية الفنية**\n" + "- التعرف على الأنماط بمستوى احترافي\n\n" +
-        "📰 **أخبار مالية منتقاة**\n" + "- تحديثات فورية لتحركات السوق\n\n" +
-        "⚡️ **نظام إشارات التداول بالذكاء الاصطناعي (AO Summit)**\n" + "- توصيات ذكاء اصطناعي بمستوى مؤسسي\n\n" +
-        "كيف يمكنني مساعدتك في بحثك الاستثماري اليوم؟ 😊",
+        "مرحبًا بكم في هونغ كونغ! 👋 أنا مساعدكم الذكي لدليل السفر في هونغ كونغ.\nأنا هنا لتقديم معلومات شاملة عن السفر والسياحة:\n\n" +
+        "🏛️ **دليل المعالم السياحية**\n" +
+        "- الأماكن الشهيرة والكنوز المخفية\n\n" +
+        "🍜 **دليل الطعام والمطاعم**\n" +
+        "- المطاعم التقليدية ومطاعم ميشلان\n\n" +
+        "🚇 **دليل المواصلات**\n" +
+        "- المترو والحافلات والترام\n\n" +
+        "🛍️ **دليل التسوق**\n" +
+        "- المولات والأسواق والمتاجر المميزة\n\n" +
+        "🎭 **التجارب الثقافية**\n" +
+        "- المهرجانات والمتاحف والثقافة التقليدية\n\n" +
+        "كيف يمكنني مساعدتك في رحلتك إلى هونغ كونغ اليوم؟ 😊",
       suggestions: [
-        "الحصول على آخر أخبار السوق",
-        "الحصول على تحليل رسم بياني لسهم ؟",
-        "ما هو AO Summit"
-      ]
-    }
-  }
+        "أفضل المعالم السياحية في هونغ كونغ",
+        "توصيات الطعام في هونغ كونغ",
+        "كيفية استخدام المواصلات",
+      ],
+    },
+  };
 };

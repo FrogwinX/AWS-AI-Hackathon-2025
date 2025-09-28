@@ -1,21 +1,25 @@
 import React from 'react';
 import { SOLUTIONS } from '../constants/info';
 import { FaBan, FaClipboardCheck, FaUserLock, FaFileContract, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
-import { BankProps, BANKS } from '@/constants/bank';
+import { TravelGuideProps, TRAVEL_GUIDES } from '@/constants/travel';
 
-const LogicPanel = ({ isActive, selectedBank } : { isActive: boolean, selectedBank: BankProps }) => {
-  const bankInfo = BANKS(selectedBank).bank;
-  const { logic } = SOLUTIONS(selectedBank);
+const LogicPanel = ({ isActive, selectedGuide } : { isActive: boolean, selectedGuide: TravelGuideProps }) => {
+  const guideInfo = TRAVEL_GUIDES(selectedGuide).guide;
+  const { logic } = SOLUTIONS(selectedGuide);
 
   const getIcon = (icon: string) => {
     switch (icon) {
       case 'ban':
+      case 'map-marked-alt':
         return <FaBan className="text-xl" />;
       case 'clipboard-check':
+      case 'clock':
         return <FaClipboardCheck className="text-xl" />;
       case 'user-lock':
+      case 'language':
         return <FaUserLock className="text-xl" />;
       case 'file-contract':
+      case 'mobile-alt':
         return <FaFileContract className="text-xl" />;
       default:
         return null;
@@ -92,24 +96,24 @@ const LogicPanel = ({ isActive, selectedBank } : { isActive: boolean, selectedBa
                 <thead>
                   <tr>
                     <th className="bg-gray-200 p-4 text-left text-sm sm:text-base">Feature</th>
-                    <th className="bg-gray-200 p-4 text-left text-sm sm:text-base">{bankInfo.initial} Wealth AI (RMs)</th>
-                    <th className="bg-gray-200 p-4 text-left text-sm sm:text-base">{bankInfo.initial} Retail AI (Clients)</th>
+                    <th className="bg-gray-200 p-4 text-left text-sm sm:text-base">{guideInfo.initial} Premium Guide</th>
+                    <th className="bg-gray-200 p-4 text-left text-sm sm:text-base">{guideInfo.initial} Travel Guide</th>
                   </tr>
                 </thead>
                 <tbody>
                   {logic.features.items.map((row, index: number) => (
                     <tr key={index} className="border-b border-gray-200">
                       <td className="p-4 text-sm sm:text-base">{row.feature}</td>
-                      <td className={`p-4 ${row.wealth.available ? 'text-blue-600 font-medium' : 'text-gray-600'}`}>
+                      <td className={`p-4 ${row.premium.available ? 'text-blue-600 font-medium' : 'text-gray-600'}`}>
                         <div className='flex flex-row gap-2 items-center'>
-                          {row.wealth.available ? <FaCheckCircle /> : <FaTimesCircle />}
-                          <span>{row.wealth.text}</span>
+                          {row.premium.available ? <FaCheckCircle /> : <FaTimesCircle />}
+                          <span>{row.premium.text}</span>
                         </div>
                       </td>
-                      <td className={`p-4 ${row.retail.available ? 'text-green-600 font-medium' : 'text-gray-600'}`}>
+                      <td className={`p-4 ${row.travel.available ? 'text-green-600 font-medium' : 'text-gray-600'}`}>
                         <div className='flex flex-row gap-2 items-center'>
-                          {row.retail.available ? <FaCheckCircle /> : <FaTimesCircle />}
-                          <span>{row.retail.text}</span>
+                          {row.travel.available ? <FaCheckCircle /> : <FaTimesCircle />}
+                          <span>{row.travel.text}</span>
                         </div>
                       </td>
                     </tr>
@@ -125,18 +129,18 @@ const LogicPanel = ({ isActive, selectedBank } : { isActive: boolean, selectedBa
                   <h4 className="font-semibold text-gray-800 mb-3 text-sm md:text-base">{row.feature}</h4>
                   
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-gray-600 text-xs sm:text-sm">{bankInfo.initial} Wealth AI:</span>
-                    <div className={`flex items-center gap-1 ${row.wealth.available ? 'text-blue-600' : 'text-gray-600'}`}>
-                      {row.wealth.available ? <FaCheckCircle /> : <FaTimesCircle />}
-                      <span className="text-xs sm:text-sm">{row.wealth.text}</span>
+                    <span className="text-gray-600 text-xs sm:text-sm">{guideInfo.initial} Premium:</span>
+                    <div className={`flex items-center gap-1 ${row.premium.available ? 'text-blue-600' : 'text-gray-600'}`}>
+                      {row.premium.available ? <FaCheckCircle /> : <FaTimesCircle />}
+                      <span className="text-xs sm:text-sm">{row.premium.text}</span>
                     </div>
                   </div>
                   
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600 text-xs sm:text-sm">{bankInfo.initial} Retail AI:</span>
-                    <div className={`flex items-center gap-1 ${row.retail.available ? 'text-green-600' : 'text-gray-600'}`}>
-                      {row.retail.available ? <FaCheckCircle /> : <FaTimesCircle />}
-                      <span className="text-xs sm:text-sm">{row.retail.text}</span>
+                    <span className="text-gray-600 text-xs sm:text-sm">{guideInfo.initial} Travel:</span>
+                    <div className={`flex items-center gap-1 ${row.travel.available ? 'text-green-600' : 'text-gray-600'}`}>
+                      {row.travel.available ? <FaCheckCircle /> : <FaTimesCircle />}
+                      <span className="text-xs sm:text-sm">{row.travel.text}</span>
                     </div>
                   </div>
                 </div>

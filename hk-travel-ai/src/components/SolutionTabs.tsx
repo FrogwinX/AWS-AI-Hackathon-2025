@@ -1,16 +1,14 @@
-import { BankProps, BANKS } from '@/constants/bank';
+import { TravelGuideProps, TRAVEL_GUIDES } from '@/constants/travel';
 import React, { useRef, useEffect } from 'react';
 
 const SolutionTabs = (
-  { activeTab, setActiveTab, selectedBank } : 
-  { activeTab: string, setActiveTab: (tab: string) => void, selectedBank: BankProps }) => {
-  const bankInfo = BANKS(selectedBank).bank;
+  { activeTab, setActiveTab, selectedGuide } : 
+  { activeTab: string, setActiveTab: (tab: string) => void, selectedGuide: TravelGuideProps }) => {
+  const guideInfo = TRAVEL_GUIDES(selectedGuide).guide;
   const tabRefs = {
-    'retail-chat': useRef<HTMLButtonElement>(null),
-    'wealth-chat': useRef<HTMLButtonElement>(null),
-    'hardware-solution': useRef<HTMLButtonElement>(null),
-    'security-solution': useRef<HTMLButtonElement>(null),
-    'product-logic': useRef<HTMLButtonElement>(null),
+    'travel-chat': useRef<HTMLButtonElement>(null),
+    'trip-planner': useRef<HTMLButtonElement>(null),
+    'guide-features': useRef<HTMLButtonElement>(null),
   };
   const indicatorRef = useRef<HTMLDivElement>(null);
 
@@ -30,63 +28,41 @@ const SolutionTabs = (
         className="absolute bottom-0 left-0 h-0.5 bg-gray-300 transition-all duration-300 ease-out"
         style={{
           transform: 'translateX(8px)',
-          width: tabRefs['retail-chat'].current?.offsetWidth || '100px',
+          width: tabRefs['travel-chat'].current?.offsetWidth || '100px',
         }}
       />
 
       <button
-        ref={tabRefs['product-logic']}
-        className={`px-2 sm:px-4 md:px-8 py-2 sm:py-3 md:py-4 cursor-pointer font-medium whitespace-nowrap ${activeTab === 'product-logic'
+        ref={tabRefs['guide-features']}
+        className={`px-2 sm:px-4 md:px-8 py-2 sm:py-3 md:py-4 cursor-pointer font-medium whitespace-nowrap ${activeTab === 'guide-features'
             ? 'text-blue-400'
             : 'text-gray-500 hover:text-gray-800'
           } transition-colors duration-200 text-xs sm:text-sm md:text-base`}
-        onClick={() => setActiveTab('product-logic')}
+        onClick={() => setActiveTab('guide-features')}
       >
-        Product Logic
+        Guide Features
       </button>
 
       <button
-        ref={tabRefs['retail-chat']}
-        className={`px-2 sm:px-4 md:px-8 py-2 sm:py-3 md:py-4 cursor-pointer font-medium whitespace-nowrap ${activeTab === 'retail-chat'
+        ref={tabRefs['travel-chat']}
+        className={`px-2 sm:px-4 md:px-8 py-2 sm:py-3 md:py-4 cursor-pointer font-medium whitespace-nowrap ${activeTab === 'travel-chat'
             ? 'text-teal-400'
             : 'text-gray-500 hover:text-gray-800'
           } transition-colors duration-200 text-xs sm:text-sm md:text-base`}
-        onClick={() => setActiveTab('retail-chat')}
+        onClick={() => setActiveTab('travel-chat')}
       >
-        {bankInfo.initial} Retail AI
+        {guideInfo.initial} Travel Chat
       </button>
 
       <button
-        ref={tabRefs['wealth-chat']}
-        className={`px-2 sm:px-4 md:px-8 py-2 sm:py-3 md:py-4 cursor-pointer font-medium whitespace-nowrap ${activeTab === 'wealth-chat'
-            ? 'text-teal-700'
+        ref={tabRefs['trip-planner']}
+        className={`px-2 sm:px-4 md:px-8 py-2 sm:py-3 md:py-4 cursor-pointer font-medium whitespace-nowrap ${activeTab === 'trip-planner'
+            ? 'text-indigo-600'
             : 'text-gray-500 hover:text-gray-800'
           } transition-colors duration-200 text-xs sm:text-sm md:text-base`}
-        onClick={() => setActiveTab('wealth-chat')}
+        onClick={() => setActiveTab('trip-planner')}
       >
-        {bankInfo.initial} Wealth AI
-      </button>
-
-      <button
-        ref={tabRefs['hardware-solution']}
-        className={`px-2 sm:px-4 md:px-8 py-2 sm:py-3 md:py-4 cursor-pointer font-medium whitespace-nowrap ${activeTab === 'hardware-solution'
-            ? 'text-purple-600'
-            : 'text-gray-500 hover:text-gray-800'
-          } transition-colors duration-200 text-xs sm:text-sm md:text-base`}
-        onClick={() => setActiveTab('hardware-solution')}
-      >
-        Hardware Solutions
-      </button>
-
-      <button
-        ref={tabRefs['security-solution']}
-        className={`px-2 sm:px-4 md:px-8 py-2 sm:py-3 md:py-4 cursor-pointer font-medium whitespace-nowrap ${activeTab === 'security-solution'
-            ? 'text-blue-800'
-            : 'text-gray-500 hover:text-gray-800'
-          } transition-colors duration-200 text-xs sm:text-sm md:text-base`}
-        onClick={() => setActiveTab('security-solution')}
-      >
-        Security Services
+        Trip Planner
       </button>
     </div>
   );

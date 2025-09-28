@@ -1,28 +1,60 @@
-# Algobot Dell Showcase
+# Hong Kong Travel AI Guide
 
-- This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+An intelligent travel companion for exploring Hong Kong, powered by AI and built with Next.js.
 
-- Run the dev localhost by building the Docker image `docker build -t algobot-dell-showcase .` and running the container `docker run -p 3000:3000 algobot-dell-showcase`
+## Features
+
+- **Smart Travel Chat**: Get personalized recommendations for attractions, dining, and activities
+- **Premium Guide Service**: Access detailed itineraries, reservations, and exclusive experiences  
+- **Multi-language Support**: Available in English, Traditional Chinese, Simplified Chinese, and Arabic
+- **Real-time Information**: Live updates on transportation, weather, and events
+- **Cultural Insights**: Learn about local customs, hidden gems, and authentic experiences
+
+## Technology Stack
+
+- **Frontend**: Next.js 15, React 19, TypeScript, Tailwind CSS
+- **AI Backend**: n8n workflow integration for intelligent responses
+- **Deployment**: Docker containerization support
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
+- n8n workflow service (for AI backend)
 
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd hk-travel-ai
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Set up environment variables:
+```bash
+cp .env.local.example .env.local
+# Edit .env.local with your n8n webhook URL
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Run the development server:
+```bash
+npm run dev
+```
+
+5. Open [http://localhost:3000](http://localhost:3000) to see the Hong Kong Travel Guide.
+
+### Docker Deployment
+
+```bash
+docker build -t hk-travel-ai .
+docker run -p 3000:3000 hk-travel-ai
+```
 
 ## Learn More
 

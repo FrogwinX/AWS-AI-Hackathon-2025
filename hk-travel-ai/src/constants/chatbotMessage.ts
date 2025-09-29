@@ -17,7 +17,7 @@ export const DEFAULT_MESSAGES = (selectedGuide: TravelGuideProps) => {
         `歡迎來到香港！👋 我是您的${guideInfo.traditionalChinese}智能助手。\n` +
         "我將為您提供最全面的香港旅遊資訊和建議：\n\n" +
         "🏛️ **景點推薦**\n" +
-        "- 熱門景點、隱藏寶石和文化地標\n\n" +
+        "- 熱門景點、隱世秘境和文化地標\n\n" +
         "🍜 **美食指南**\n" +
         "- 茶餐廳、米其林餐廳和街頭小食\n\n" +
         "🚇 **交通攻略**\n" +
@@ -40,7 +40,7 @@ export const DEFAULT_MESSAGES = (selectedGuide: TravelGuideProps) => {
         `欢迎来到香港！👋 我是您的${guideInfo.simplifiedChinese}智能助手。\n` +
         "我将为您提供最全面的香港旅游资讯和建议：\n\n" +
         "🏛️ **景点推荐**\n" +
-        "- 热门景点、隐藏宝石和文化地标\n\n" +
+        "- 热门景点、隐世秘境和文化地标\n\n" +
         "🍜 **美食指南**\n" +
         "- 茶餐厅、米其林餐厅和街头小食\n\n" +
         "🚇 **交通攻略**\n" +

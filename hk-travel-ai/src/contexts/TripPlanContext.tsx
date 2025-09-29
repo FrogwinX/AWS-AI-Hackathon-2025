@@ -1,13 +1,13 @@
 'use client';
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { TripDay, TripPlan } from './TripTypes';
+import { TripDay, TripPlan, Activity, Transport } from '../constants/tripStructure';
 
 interface TripPlanContextType {
   tripPlan: TripPlan;
   updateTripPlan: (newPlan: Partial<TripPlan>) => void;
-  addActivity: (dayIndex: number, activity: TripDay['activities'][0]) => void;
-  updateActivity: (dayIndex: number, activityIndex: number, updates: Partial<TripDay['activities'][0]>) => void;
+  addActivity: (dayIndex: number, activity: Activity) => void;
+  updateActivity: (dayIndex: number, activityIndex: number, updates: Partial<Activity>) => void;
   removeActivity: (dayIndex: number, activityIndex: number) => void;
   addDay: (day: TripDay) => void;
   removeDay: (dayIndex: number) => void;
@@ -22,7 +22,9 @@ const initialTripPlan: TripPlan = {
   startDate: "",
   endDate: "",
   totalDays: 0,
-  days: []
+  days: [],
+  arrivalPort: "Hong Kong International Airport",
+  departurePort: "Hong Kong International Airport"
 };
 
 export const TripPlanProvider = ({ children }: { children: ReactNode }) => {
@@ -31,7 +33,6 @@ export const TripPlanProvider = ({ children }: { children: ReactNode }) => {
   const updateTripPlan = (newPlan: Partial<TripPlan>) => {
     setTripPlan(prev => {
       const updated = { ...prev, ...newPlan };
-      // Recalculate totalDays based on actual days array
       if (updated.days) {
         updated.totalDays = updated.days.length;
         if (updated.days.length > 0) {
@@ -43,18 +44,60 @@ export const TripPlanProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const addActivity = (dayIndex: number, activity: TripDay['activities'][0]) => {
-    setTripPlan(prev => ({
-      ...prev,
-      days: prev.days.map((day, index) => 
-        index === dayIndex 
-          ? { ...day, activities: [...day.activities, activity] }
-          : day
-      )
-    }));
+  const addActivity = (dayIndex: number, activity: Activity) => {
+    setTripPlan(prev => {
+      const updatedDays = prev.days.map((day, index) => {
+        if (index === dayIndex) {
+          const newActivities = [...day.activities, activity];
+          const newTransports = [...day.transports];
+          
+          // Add transport from previous activity or accommodation
+          if (day.activities.length > 0) {
+            const lastActivity = day.activities[day.activities.length - 1];
+            const newTransport: Transport = {
+              id: `transport-${Date.now()}-${Math.random()}`,
+              fromActivityId: lastActivity.id,
+              toActivityId: activity.id,
+              method: "",
+              duration: ""
+            };
+            newTransports.push(newTransport);
+          } else if (index > 0 && day.accommodation.name) {
+            // First activity of the day - transport from accommodation
+            const accommodationId = `accommodation-${index}`;
+            const newTransport: Transport = {
+              id: `transport-${Date.now()}-${Math.random()}`,
+              fromActivityId: accommodationId,
+              toActivityId: activity.id,
+              method: "",
+              duration: ""
+            };
+            newTransports.push(newTransport);
+          }
+          
+          // Add transport to accommodation if this is the last activity and not the last day
+          if (index < prev.days.length - 1 && day.accommodation.name) {
+            const accommodationId = `accommodation-${index}`;
+            const toAccommodationTransport: Transport = {
+              id: `transport-${Date.now()}-${Math.random() + 1}`,
+              fromActivityId: activity.id,
+              toActivityId: accommodationId,
+              method: "",
+              duration: ""
+            };
+            newTransports.push(toAccommodationTransport);
+          }
+          
+          return { ...day, activities: newActivities, transports: newTransports };
+        }
+        return day;
+      });
+      
+      return { ...prev, days: updatedDays };
+    });
   };
 
-  const updateActivity = (dayIndex: number, activityIndex: number, updates: Partial<TripDay['activities'][0]>) => {
+  const updateActivity = (dayIndex: number, activityIndex: number, updates: Partial<Activity>) => {
     setTripPlan(prev => ({
       ...prev,
       days: prev.days.map((day, dIndex) => 
@@ -73,14 +116,22 @@ export const TripPlanProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const removeActivity = (dayIndex: number, activityIndex: number) => {
-    setTripPlan(prev => ({
-      ...prev,
-      days: prev.days.map((day, index) => 
-        index === dayIndex 
-          ? { ...day, activities: day.activities.filter((_, i) => i !== activityIndex) }
-          : day
-      )
-    }));
+    setTripPlan(prev => {
+      const updatedDays = prev.days.map((day, index) => {
+        if (index === dayIndex) {
+          const activityToRemove = day.activities[activityIndex];
+          const newActivities = day.activities.filter((_, i) => i !== activityIndex);
+          const newTransports = day.transports.filter(t => 
+            t.fromActivityId !== activityToRemove.id && t.toActivityId !== activityToRemove.id
+          );
+          
+          return { ...day, activities: newActivities, transports: newTransports };
+        }
+        return day;
+      });
+      
+      return { ...prev, days: updatedDays };
+    });
   };
 
   const addDay = (day: TripDay) => {
@@ -121,22 +172,18 @@ export const TripPlanProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const parseChatResponse = (response: string) => {
-    // Ensure response is a string
     if (!response || typeof response !== 'string') {
       return;
     }
     
     const lowerResponse = response.toLowerCase();
-    
-    // Only update trip plan if the response contains trip planning keywords
     const planningKeywords = ['itinerary', 'plan', 'schedule', 'day 1', 'day 2', 'visit', 'trip'];
     const hasPlanningContent = planningKeywords.some(keyword => lowerResponse.includes(keyword));
     
     if (!hasPlanningContent) {
-      return; // Don't modify trip plan for general travel questions
+      return;
     }
     
-    // If this is the first planning response and we have no days, create initial structure
     if (tripPlan.days.length === 0) {
       const today = new Date();
       const tomorrow = new Date(today);
@@ -148,7 +195,8 @@ export const TripPlanProvider = ({ children }: { children: ReactNode }) => {
           name: "",
           address: ""
         },
-        activities: []
+        activities: [],
+        transports: []
       };
       
       addDay(firstDay);
@@ -161,19 +209,15 @@ export const TripPlanProvider = ({ children }: { children: ReactNode }) => {
     
     locations.forEach(location => {
       if (lowerResponse.includes(location)) {
-        const newActivity = {
+        const newActivity: Activity = {
+          id: `activity-${Date.now()}-${Math.random()}`,
           time: timeMatches ? timeMatches[0] : "10:00",
           location: location.charAt(0).toUpperCase() + location.slice(1),
           activity: `Visit ${location}`,
           duration: "2 hours",
-          transport: {
-            method: "MTR",
-            duration: "30 minutes",
-            cost: "HK$15"
-          }
+          type: 'activity'
         };
         
-        // Add to the last day or first day if available
         const dayIndex = Math.max(0, tripPlan.days.length - 1);
         addActivity(dayIndex, newActivity);
       }

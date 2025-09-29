@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { TravelGuideProps } from '@/constants/travel';
 import { useTripPlan } from '@/contexts/TripPlanContext';
-import { TripDay } from '@/contexts/TripTypes';
+import { TripDay, Activity, Transport } from '@/constants/tripStructure';
 import { FaPlus } from 'react-icons/fa';
 import TripHeader from './TripHeader';
 import TripOverview from './TripOverview';
@@ -11,10 +11,12 @@ import DayCard from './DayCard';
 import DeleteConfirmModal from './DeleteConfirmModal';
 
 const TripPlannerPanel = ({ isActive, selectedGuide }: { isActive: boolean, selectedGuide: TravelGuideProps }) => {
-  const { tripPlan, addActivity, updateActivity, removeActivity, addDay, removeDay, updateTripPlan } = useTripPlan();
+  const { tripPlan, addActivity, updateActivity, removeActivity, addDay, removeDay, updateTripPlan, updateAccommodation } = useTripPlan();
 
   const [editingDay, setEditingDay] = useState<number | null>(null);
   const [editingActivity, setEditingActivity] = useState<number | null>(null);
+  const [editingTransport, setEditingTransport] = useState<number | null>(null);
+  const [editingAccommodation, setEditingAccommodation] = useState<number | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<number | null>(null);
 
   const addNewDay = () => {
@@ -35,23 +37,21 @@ const TripPlannerPanel = ({ isActive, selectedGuide }: { isActive: boolean, sele
         name: "",
         address: ""
       },
-      activities: []
+      activities: [],
+      transports: []
     };
     
     addDay(newDay);
   };
 
   const addNewActivity = (dayIndex: number) => {
-    const newActivity = {
+    const newActivity: Activity = {
+      id: `activity-${Date.now()}-${Math.random()}`,
       time: "09:00",
       location: "",
       activity: "",
       duration: "1 hour",
-      transport: {
-        method: "MTR",
-        duration: "30 minutes",
-        cost: "HK$10"
-      }
+      type: 'activity'
     };
 
     addActivity(dayIndex, newActivity);
@@ -65,14 +65,29 @@ const TripPlannerPanel = ({ isActive, selectedGuide }: { isActive: boolean, sele
     updateActivity(dayIndex, activityIndex, { [field]: value });
   };
 
-  const updateTransport = (dayIndex: number, activityIndex: number, field: string, value: string) => {
-    const currentActivity = tripPlan.days[dayIndex].activities[activityIndex];
-    updateActivity(dayIndex, activityIndex, {
-      transport: {
-        ...currentActivity.transport!,
-        [field]: value
-      }
-    });
+  const updateTransport = (dayIndex: number, transportIndex: number, field: string, value: string) => {
+    const currentTransport = tripPlan.days[dayIndex].transports[transportIndex];
+    const updatedTransport = {
+      ...currentTransport,
+      [field]: value
+    };
+    
+    const updatedTransports = [...tripPlan.days[dayIndex].transports];
+    updatedTransports[transportIndex] = updatedTransport;
+    
+    const updatedDay = {
+      ...tripPlan.days[dayIndex],
+      transports: updatedTransports
+    };
+    
+    const updatedDays = [...tripPlan.days];
+    updatedDays[dayIndex] = updatedDay;
+    
+    updateTripPlan({ days: updatedDays });
+  };
+
+  const handleUpdateAccommodation = (dayIndex: number, field: string, value: string) => {
+    updateAccommodation(dayIndex, { [field]: value });
   };
 
   const handleStartDateChange = (newStartDate: string) => {
@@ -143,6 +158,34 @@ const TripPlannerPanel = ({ isActive, selectedGuide }: { isActive: boolean, sele
                 onUpdateActivity={handleUpdateActivity}
                 onUpdateTransport={updateTransport}
                 canDelete={tripPlan.days.length > 1}
+                editingTransport={editingTransport}
+                onEditTransport={(dayIdx, transportIdx) => {
+                  setEditingDay(dayIdx);
+                  setEditingTransport(transportIdx);
+                }}
+                onSaveTransport={() => {
+                  setEditingDay(null);
+                  setEditingTransport(null);
+                }}
+                onCancelTransportEdit={() => {
+                  setEditingDay(null);
+                  setEditingTransport(null);
+                }}
+                editingAccommodation={editingAccommodation}
+                onEditAccommodation={(dayIdx) => {
+                  setEditingAccommodation(dayIdx);
+                }}
+                onSaveAccommodation={() => {
+                  setEditingAccommodation(null);
+                }}
+                onCancelAccommodationEdit={() => {
+                  setEditingAccommodation(null);
+                }}
+                onUpdateAccommodation={handleUpdateAccommodation}
+                isLastDay={dayIndex === tripPlan.days.length - 1}
+                isFirstDay={dayIndex === 0}
+                arrivalPort={tripPlan.arrivalPort}
+                departurePort={tripPlan.departurePort}
               />
             ))}
           </div>

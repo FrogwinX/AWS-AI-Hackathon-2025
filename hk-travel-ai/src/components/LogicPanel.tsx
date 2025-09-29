@@ -1,10 +1,9 @@
 import React from 'react';
 import { SOLUTIONS } from '../constants/info';
 import { FaBan, FaClipboardCheck, FaUserLock, FaFileContract, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
-import { TravelGuideProps, TRAVEL_GUIDES } from '@/constants/travel';
+import { TravelGuideProps } from '@/constants/travel';
 
 const LogicPanel = ({ isActive, selectedGuide } : { isActive: boolean, selectedGuide: TravelGuideProps }) => {
-  const guideInfo = TRAVEL_GUIDES(selectedGuide).guide;
   const { logic } = SOLUTIONS(selectedGuide);
 
   const getIcon = (icon: string) => {

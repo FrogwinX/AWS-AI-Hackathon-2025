@@ -1,9 +1,9 @@
 import React from 'react';
-import { FaClock, FaMapMarkerAlt, FaRoute, FaEdit, FaSave, FaTimes, FaTrash } from 'react-icons/fa';
-import { TripDay } from '@/contexts/TripTypes';
+import { FaClock, FaMapMarkerAlt, FaEdit, FaSave, FaTimes, FaTrash, FaExclamationTriangle } from 'react-icons/fa';
+import { Activity } from '@/constants/tripStructure';
 
 interface ActivityRowProps {
-  activity: TripDay['activities'][0];
+  activity: Activity;
   dayIndex: number;
   activityIndex: number;
   isEditing: boolean;
@@ -12,7 +12,7 @@ interface ActivityRowProps {
   onCancel: () => void;
   onRemove: () => void;
   onUpdateActivity: (field: string, value: string) => void;
-  onUpdateTransport: (field: string, value: string) => void;
+  hasTimeError: boolean;
 }
 
 const ActivityRow = ({
@@ -23,23 +23,28 @@ const ActivityRow = ({
   onCancel,
   onRemove,
   onUpdateActivity,
-  onUpdateTransport
+  hasTimeError
 }: ActivityRowProps) => {
   return (
     <tr className="hover:bg-gray-50">
-      <td className="px-4 py-4 whitespace-nowrap">
+      <td className="px-4 py-4">
         <div className="flex items-center gap-2">
-          <FaClock className="text-gray-400 text-sm" />
-          {isEditing ? (
-            <input
-              type="time"
-              value={activity.time}
-              onChange={(e) => onUpdateActivity('time', e.target.value)}
-              className="border rounded px-2 py-1 text-sm w-20"
-            />
-          ) : (
-            <span className="text-sm font-medium text-gray-900">{activity.time}</span>
-          )}
+          <FaClock className={`text-sm ${hasTimeError ? 'text-red-500' : 'text-gray-400'}`} />
+          <div>
+            {isEditing ? (
+              <input
+                type="time"
+                value={activity.time}
+                onChange={(e) => onUpdateActivity('time', e.target.value)}
+                className={`border rounded px-2 py-1 text-sm w-20 ${hasTimeError ? 'border-red-300 bg-red-50' : ''}`}
+              />
+            ) : (
+              <span className={`text-sm font-medium ${hasTimeError ? 'text-red-700' : 'text-gray-900'}`}>{activity.time}</span>
+            )}
+            {hasTimeError && (
+              <div className="text-red-600 text-xs mt-1">Time not in order</div>
+            )}
+          </div>
         </div>
       </td>
       
@@ -87,48 +92,7 @@ const ActivityRow = ({
         )}
       </td>
       
-      <td className="px-4 py-4">
-        {activity.transport && (
-          <div className="text-sm">
-            {isEditing ? (
-              <div className="space-y-1">
-                <input
-                  type="text"
-                  value={activity.transport.method}
-                  onChange={(e) => onUpdateTransport('method', e.target.value)}
-                  className="border rounded px-2 py-1 text-xs w-full"
-                  placeholder="Method"
-                />
-                <input
-                  type="text"
-                  value={activity.transport.duration}
-                  onChange={(e) => onUpdateTransport('duration', e.target.value)}
-                  className="border rounded px-2 py-1 text-xs w-full"
-                  placeholder="Duration"
-                />
-                <input
-                  type="text"
-                  value={activity.transport.cost || ''}
-                  onChange={(e) => onUpdateTransport('cost', e.target.value)}
-                  className="border rounded px-2 py-1 text-xs w-full"
-                  placeholder="Cost"
-                />
-              </div>
-            ) : (
-              <div className="flex items-center gap-2">
-                <FaRoute className="text-blue-500 text-sm" />
-                <div>
-                  <div className="font-medium text-gray-900">{activity.transport.method}</div>
-                  <div className="text-gray-500 text-xs">{activity.transport.duration}</div>
-                  {activity.transport.cost && (
-                    <div className="text-green-600 text-xs font-medium">{activity.transport.cost}</div>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-      </td>
+
       
       <td className="px-4 py-4 whitespace-nowrap">
         <div className="flex items-center gap-2">

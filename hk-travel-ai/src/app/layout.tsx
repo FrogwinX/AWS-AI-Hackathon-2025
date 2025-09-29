@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'Hong Kong Travel Chat Bot | AI Travel Guide',
   description: 'Your intelligent companion for exploring Hong Kong - get personalized recommendations, itineraries, and travel tips',
-  icons: '/favicon.ico',
+  // icons: '/favicon.ico',
 };
 
 export default function RootLayout({

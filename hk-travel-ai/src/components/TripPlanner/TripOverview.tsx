@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { FaCalendarAlt, FaMapMarkerAlt, FaBed, FaEdit, FaSave, FaTimes, FaPlus } from 'react-icons/fa';
-import { TripPlan } from '@/contexts/TripTypes';
+import { FaCalendarAlt, FaMapMarkerAlt, FaBed, FaEdit, FaSave, FaTimes, FaPlus, FaPlane } from 'react-icons/fa';
+import { TripPlan } from '@/constants/tripStructure';
+import { HK_ENTRY_PORTS } from '@/constants/hkPorts';
 
 interface TripOverviewProps {
   tripPlan: TripPlan;
@@ -63,28 +64,59 @@ const TripOverview = ({ tripPlan, onUpdateTripPlan, onAddNewDay, onStartDateChan
           )}
         </div>
         
-        <div className="flex items-center gap-4 text-sm text-gray-600">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:items-center gap-3 text-sm text-gray-600">
           <div className="flex items-center gap-2">
             <FaCalendarAlt className="text-indigo-600" />
             <span>{tripPlan.days.length} days</span>
           </div>
           {tripPlan.days.length > 0 && (
             <div className="flex items-center gap-2">
-              <label className="text-gray-700 font-medium">Arrival:</label>
+              <label className="text-gray-700 font-medium whitespace-nowrap">Date:</label>
               <input
                 type="date"
                 value={tripPlan.startDate || ''}
                 min={new Date().toISOString().split('T')[0]}
                 onChange={(e) => onStartDateChange(e.target.value)}
-                className="px-2 py-1 border border-indigo-300 rounded text-gray-800 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="px-2 py-1 border border-indigo-300 rounded text-gray-800 focus:outline-none focus:ring-1 focus:ring-indigo-500 text-xs"
               />
             </div>
           )}
-          {tripPlan.startDate && tripPlan.endDate && (
-            <span className="text-gray-500">{tripPlan.startDate} to {tripPlan.endDate}</span>
-          )}
+          <div className="flex items-center gap-2">
+            <FaPlane className="text-green-600 flex-shrink-0" />
+            <label className="text-gray-700 font-medium whitespace-nowrap">Arrival:</label>
+            <select
+              value={tripPlan.arrivalPort || ''}
+              onChange={(e) => onUpdateTripPlan({ arrivalPort: e.target.value })}
+              className="px-2 py-1 border border-indigo-300 rounded text-gray-800 focus:outline-none focus:ring-1 focus:ring-indigo-500 text-xs min-w-0 flex-1"
+            >
+              <option value="">Select</option>
+              {HK_ENTRY_PORTS.map(port => (
+                <option key={port} value={port}>{port}</option>
+              ))}
+            </select>
+          </div>
+          <div className="flex items-center gap-2">
+            <FaPlane className="text-red-600 transform rotate-180 flex-shrink-0" />
+            <label className="text-gray-700 font-medium whitespace-nowrap">Departure:</label>
+            <select
+              value={tripPlan.departurePort || ''}
+              onChange={(e) => onUpdateTripPlan({ departurePort: e.target.value })}
+              className="px-2 py-1 border border-indigo-300 rounded text-gray-800 focus:outline-none focus:ring-1 focus:ring-indigo-500 text-xs min-w-0 flex-1"
+            >
+              <option value="">Select</option>
+              {HK_ENTRY_PORTS.map(port => (
+                <option key={port} value={port}>{port}</option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
+      
+      {tripPlan.startDate && tripPlan.endDate && (
+        <div className="text-center text-sm text-gray-500 mb-2">
+          {tripPlan.startDate} to {tripPlan.endDate}
+        </div>
+      )}
       
       {tripPlan.days.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600">

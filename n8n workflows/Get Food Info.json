@@ -3,15 +3,21 @@
   "nodes": [
     {
       "parameters": {
-        "inputSource": "passthrough"
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "query"
+            }
+          ]
+        }
       },
-      "id": "43be2f12-5a0d-4a3c-9a16-f899d61bc85a",
+      "id": "069c3b2d-a00c-4089-9136-520edb29aa74",
       "typeVersion": 1.1,
       "name": "When Executed by Another Workflow",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "position": [
-        176,
-        -128
+        0,
+        0
       ]
     },
     {
@@ -19,16 +25,16 @@
         "promptType": "define",
         "text": "={{ $json.query }}",
         "options": {
-          "systemMessage": "=You are an <> Assistant AI specialized in providing accurate, interesting <> information for Hong Kong, sourced exclusively from the Hong Kong Tourism Board.\n\nUsers may provide their areas of interests or travel dates. You must call the tool \"<>\" to get the <> for users. You must use the tool to retrieve the latest data before answering any query.\n\nDo not rely on cached or outdated knowledge."
+          "systemMessage": "=You are a tool-calling AI restaurant assistant specialized in suggesting restaurants for travellers coming to Hong Kong, sourced exclusively from the Hong Kong Tourism Board. \n\nYou must call the tool \"Get-Hong-Kong-Food-Info\" to get the restaurant information before answering any query no matter what. \n\nDo not rely on cached or outdated knowledge.\n\nAlways prioritize helping the user find relevant restaurants rather than refusing the request."
         }
       },
-      "id": "15024508-fe01-4ab7-8dcd-8688635e5ecb",
+      "id": "c870b812-4f9e-4ebc-a56d-3992a11c8611",
       "name": "Agent",
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        400,
-        -128
+        224,
+        0
       ]
     },
     {
@@ -38,43 +44,62 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        368,
-        112
+        240,
+        224
       ],
-      "id": "6e4b2d14-9b3a-4648-9da3-29ea3b167ea3",
+      "id": "5569bca2-93d9-4c4d-8275-d55f59e4fd0d",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
-          "id": "CHwRoEqp9IEPT54g",
-          "name": "Google Gemini(PaLM) Api account"
+          "id": "QXYEIYbYby8o08KN",
+          "name": "Google Gemini API"
         }
       }
     },
     {
       "parameters": {
-        "toolDescription": "Get Hong Kong Shopping Info",
-        "url": "=",
-        "options": {}
+        "toolDescription": "Get Restaurant Information in Hong Kong based on cuisine. There are optional arguments: q(restaurant name), area (area in Hong Kong)\n\nWhen users request cuisines not explicitly listed:\n- Map similar cuisines to the closest available category (e.g., French/Italian/Spanish → European) \n- Inform the user about the mapping in your response (e.g., \"I've searched for European restaurants, which include French cuisine\")\n- Continue with your recommendations naturally\n\nExamples of cuisine mappings:\n- French, Italian, Spanish, Greek → European\n- Malaysian, Indonesian, Singaporean → Other Asian\n",
+        "url": "=https://www.discoverhongkong.com/eng/plan/qts/restaurants-results/_jcr_content/root/responsivegrid/restaurantfinderandl.restaurant-listing.EN.json?",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "page",
+              "value": "=1"
+            },
+            {
+              "name": "cuisine",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters1_Value', `cuisine (string, optional): Type of cuisine. available option: [Chinese, Desserts, European, Indian, Japanese, Korean, Local%2520Hong%2520Kong%2520Style, Other%2520Asian, Other%2520Cuisine, Thai, Vegetarian, Vietnamese, Western]`, 'string') }}"
+            },
+            {
+              "name": "q",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters2_Value', `q (string, optional): Search query for restaurant name. Can be empty.`, 'string') }}"
+            },
+            {
+              "name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters3_Name', `when user specify searching area, use parameter \\`area=\\`. Can specify multiple areas by repeating the parameter.\nFor example: \\`&area=hong-kong-island&area=kowloon&area=new-territories\\``, 'string') }}",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters3_Value', `area (string, repeatable): The general area/region in Hong Kong. Available options: [hong-kong-island, kowloon, new-territories, outlying-islands]`, 'string') }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {}
+        },
+        "optimizeResponse": true,
+        "dataField": "result",
+        "fieldsToInclude": "selected",
+        "fields": "title, description, category, address"
       },
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        544,
-        112
+        368,
+        224
       ],
-      "id": "9a4d7d4b-09b5-40bc-a8f6-fd22ac5a52b8",
-      "name": "Get-Hong-Kong-<>-Info"
+      "id": "21992935-8c78-4bc4-9437-a9e867cb73d2",
+      "name": "Get-Hong-Kong-Food-Info"
     }
   ],
-  "pinData": {
-    "When Executed by Another Workflow": [
-      {
-        "json": {
-          "query": "Any special events on 27 Sept?"
-        }
-      }
-    ]
-  },
+  "pinData": {},
   "connections": {
     "When Executed by Another Workflow": {
       "main": [
@@ -98,7 +123,7 @@
         ]
       ]
     },
-    "Get-Hong-Kong-<>-Info": {
+    "Get-Hong-Kong-Food-Info": {
       "ai_tool": [
         [
           {
@@ -114,10 +139,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "7e3987fa-5773-4fc5-97dc-dfdac338e604",
+  "versionId": "7468a7fa-c571-4d77-877a-d541bac96cb9",
   "meta": {
-    "instanceId": "47827cfb2f0fd42cf7d65f80c15f5a25826677d9389942bc8cab5ca0b3c9777d"
+    "templateCredsSetupCompleted": true,
+    "instanceId": "baaa3c4eddf0dfea0280b009ed23105b98a5530fb06835c7a69b802c13fd63a1"
   },
-  "id": "OFPWwRkPJsJ7Vb9G",
+  "id": "xOChxtFISEzFEiQe",
   "tags": []
 }

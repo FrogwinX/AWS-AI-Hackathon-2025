@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaBed, FaPlus, FaTrash, FaCalendarAlt } from 'react-icons/fa';
-import { TripDay } from '@/contexts/TripPlanContext';
+import { TripDay } from '@/contexts/TripTypes';
 import ActivityRow from './ActivityRow';
 
 interface DayCardProps {

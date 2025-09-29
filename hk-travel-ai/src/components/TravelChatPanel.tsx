@@ -4,7 +4,7 @@ import Chatbot from './Chatbot';
 import ChatbotInfo from './ChatbotInfo';
 import { TravelGuideProps, TRAVEL_GUIDES } from '@/constants/travel';
 
-const RetailChatPanel = ({ isActive, chatId, selectedGuide } : { isActive: boolean, chatId: string, selectedGuide: TravelGuideProps}) => {
+const TravelChatPanel = ({ isActive, chatId, selectedGuide } : { isActive: boolean, chatId: string, selectedGuide: TravelGuideProps}) => {
   const guideInfo = TRAVEL_GUIDES(selectedGuide).guide;
   const { travelChatbot } = SOLUTIONS(selectedGuide);
   return (
@@ -22,4 +22,4 @@ const RetailChatPanel = ({ isActive, chatId, selectedGuide } : { isActive: boole
   );
 };
 
-export default RetailChatPanel;
+export default TravelChatPanel;

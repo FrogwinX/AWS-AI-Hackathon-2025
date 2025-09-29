@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaCalendarAlt, FaMapMarkerAlt, FaBed, FaEdit, FaSave, FaTimes, FaPlus } from 'react-icons/fa';
-import { TripPlan } from '@/contexts/TripPlanContext';
+import { TripPlan } from '@/contexts/TripTypes';
 
 interface TripOverviewProps {
   tripPlan: TripPlan;

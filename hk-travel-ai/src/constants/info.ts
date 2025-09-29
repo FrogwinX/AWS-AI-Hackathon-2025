@@ -29,11 +29,7 @@ export const SOLUTIONS = (selectedGuide: TravelGuideProps) => {
               title: "Personalized Recommendations",
               description: "Receive tailored suggestions based on your interests and current location"
             },
-            {
-              number: 4,
-              title: "Premium Upgrade Option",
-              description: `Upgrade to ${guideInfo.initial} Premium for detailed itineraries and exclusive insights`
-            },
+
             {
               number: 5,
               title: "Continuous Support",
@@ -72,33 +68,33 @@ export const SOLUTIONS = (selectedGuide: TravelGuideProps) => {
         items: [
           {
             feature: "Detailed Itinerary Planning",
-            premium: { available: true, text: "Full Details" },
-            travel: { available: false, text: "Basic Only" }
+            available: true,
+            description: "Comprehensive trip planning with personalized recommendations"
           },
           {
             feature: "Restaurant Reservations",
-            premium: { available: true, text: "Full Service" },
-            travel: { available: false, text: "Recommendations Only" }
+            available: true,
+            description: "Restaurant recommendations and booking assistance"
           },
           {
             feature: "Attraction Information",
-            premium: { available: true, text: "Available" },
-            travel: { available: true, text: "Available" }
+            available: true,
+            description: "Complete details about Hong Kong attractions and activities"
           },
           {
             feature: "Transportation Guidance",
-            premium: { available: true, text: "Full Details" },
-            travel: { available: true, text: "Full Details" }
+            available: true,
+            description: "Detailed public transport and navigation assistance"
           },
           {
             feature: "Emergency Assistance",
-            premium: { available: true, text: "24/7 Support" },
-            travel: { available: true, text: "Basic Support" }
+            available: true,
+            description: "24/7 travel support and emergency guidance"
           },
           {
             feature: "Cultural Insights",
-            premium: { available: true, text: "Deep Insights" },
-            travel: { available: true, text: "Basic Overview" }
+            available: true,
+            description: "Deep cultural knowledge and local customs guidance"
           }
         ]
       }

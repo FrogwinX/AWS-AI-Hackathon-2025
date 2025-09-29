@@ -90,59 +90,15 @@ const LogicPanel = ({ isActive, selectedGuide } : { isActive: boolean, selectedG
               <h3 className="text-base sm:text-lg font-bold text-gray-800">{logic.features.title}</h3>
             </div>
             
-            {/* Desktop Table */}
-            <div className="hidden md:block">
-              <table className="min-w-full border-collapse">
-                <thead>
-                  <tr>
-                    <th className="bg-gray-200 p-4 text-left text-sm sm:text-base">Feature</th>
-                    <th className="bg-gray-200 p-4 text-left text-sm sm:text-base">{guideInfo.initial} Premium Guide</th>
-                    <th className="bg-gray-200 p-4 text-left text-sm sm:text-base">{guideInfo.initial} Travel Guide</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {logic.features.items.map((row, index: number) => (
-                    <tr key={index} className="border-b border-gray-200">
-                      <td className="p-4 text-sm sm:text-base">{row.feature}</td>
-                      <td className={`p-4 ${row.premium.available ? 'text-blue-600 font-medium' : 'text-gray-600'}`}>
-                        <div className='flex flex-row gap-2 items-center'>
-                          {row.premium.available ? <FaCheckCircle /> : <FaTimesCircle />}
-                          <span>{row.premium.text}</span>
-                        </div>
-                      </td>
-                      <td className={`p-4 ${row.travel.available ? 'text-green-600 font-medium' : 'text-gray-600'}`}>
-                        <div className='flex flex-row gap-2 items-center'>
-                          {row.travel.available ? <FaCheckCircle /> : <FaTimesCircle />}
-                          <span>{row.travel.text}</span>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            
-            {/* Mobile Cards */}
-            <div className="md:hidden space-y-4">
-              {logic.features.items.map((row, index: number) => (
+            {/* Features Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {logic.features.items.map((item, index: number) => (
                 <div key={index} className="bg-white rounded-lg p-4 border border-gray-200">
-                  <h4 className="font-semibold text-gray-800 mb-3 text-sm md:text-base">{row.feature}</h4>
-                  
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-gray-600 text-xs sm:text-sm">{guideInfo.initial} Premium:</span>
-                    <div className={`flex items-center gap-1 ${row.premium.available ? 'text-blue-600' : 'text-gray-600'}`}>
-                      {row.premium.available ? <FaCheckCircle /> : <FaTimesCircle />}
-                      <span className="text-xs sm:text-sm">{row.premium.text}</span>
-                    </div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <FaCheckCircle className="text-green-600" />
+                    <h4 className="font-semibold text-gray-800 text-sm md:text-base">{item.feature}</h4>
                   </div>
-                  
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-600 text-xs sm:text-sm">{guideInfo.initial} Travel:</span>
-                    <div className={`flex items-center gap-1 ${row.travel.available ? 'text-green-600' : 'text-gray-600'}`}>
-                      {row.travel.available ? <FaCheckCircle /> : <FaTimesCircle />}
-                      <span className="text-xs sm:text-sm">{row.travel.text}</span>
-                    </div>
-                  </div>
+                  <p className="text-gray-600 text-xs sm:text-sm ml-6">{item.description}</p>
                 </div>
               ))}
             </div>

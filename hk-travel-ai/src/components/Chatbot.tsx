@@ -20,7 +20,7 @@ import {
   FaQuestionCircle,
 } from "react-icons/fa";
 import remarkBreaks from "remark-breaks";
-import { RetailMessage, messageQueue } from "@/utils/messageQueue";
+import { TravelMessage } from "@/utils/messageQueue";
 import { MarkdownComponents } from "./MarkdownEditor";
 import { TravelGuideProps } from "@/constants/travel";
 import { useTripPlan } from "@/contexts/TripPlanContext";
@@ -42,7 +42,7 @@ const Chatbot = ({
   const suggestions =
     DEFAULT_MESSAGES(selectedGuide)[currentLanguage].suggestions;
 
-  const [messages, setMessages] = useState<RetailMessage[]>([]);
+  const [messages, setMessages] = useState<TravelMessage[]>([]);
   const [inputValue, setInputValue] = useState("");
   const chatHistoryRef = useRef<HTMLDivElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
@@ -102,7 +102,7 @@ const Chatbot = ({
     });
   };
 
-  const addMessage = (message: RetailMessage) => {
+  const addMessage = (message: TravelMessage) => {
     const messageWithId = {
       ...message,
       messageId: message.messageId || generateMessageId(),
@@ -170,7 +170,7 @@ const Chatbot = ({
 
     setIsMessageSending(true);
 
-    const userMessage: RetailMessage = {
+    const userMessage: TravelMessage = {
       chatbotId: chatId,
       messageId: generateMessageId(),
       text: messageContent,
@@ -189,7 +189,7 @@ const Chatbot = ({
     );
 
     const loadingMessageId = generateMessageId();
-    const loadingMessage: RetailMessage = {
+    const loadingMessage: TravelMessage = {
       chatbotId: chatId,
       messageId: loadingMessageId,
       text: "",
@@ -253,13 +253,7 @@ const Chatbot = ({
         parseChatResponse(botResponse);
       }
 
-      if (response && response.isPassToWealth && response.query) {
-        messageQueue.publishWealth({
-          ...userMessage,
-          text: response.query,
-          audioUrl: userMessage.audioUrl || null
-        }, chatId);
-      }
+
 
       setMessages((prev) =>
         prev.map((msg) =>
@@ -338,7 +332,7 @@ const Chatbot = ({
   };
 
   // Convert message content to JSX elements using React Markdown
-  const displayMessage = (message: RetailMessage) => {
+  const displayMessage = (message: TravelMessage) => {
     if (message.isLoading) {
       return (
         <div className="flex gap-2 pt-3">
@@ -386,18 +380,7 @@ const Chatbot = ({
     }
   }, [messages]);
 
-  useEffect(() => {
-    const unsubscribe = messageQueue.subscribeWealth(
-      (newMessage: RetailMessage) => {
-        const replyMessage = newMessage.parentMessageId
-          ? { ...newMessage, parentMessageId: newMessage.parentMessageId }
-          : newMessage;
-        setMessages((prev) => [...prev, replyMessage]);
-      }
-    );
 
-    return unsubscribe;
-  }, []);
 
   return (
     <div className="flex flex-col overflow-y-auto flex-1">

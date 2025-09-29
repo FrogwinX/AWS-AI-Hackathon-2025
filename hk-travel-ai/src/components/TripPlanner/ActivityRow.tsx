@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaClock, FaMapMarkerAlt, FaRoute, FaEdit, FaSave, FaTimes, FaTrash } from 'react-icons/fa';
-import { TripDay } from '@/contexts/TripPlanContext';
+import { TripDay } from '@/contexts/TripTypes';
 
 interface ActivityRowProps {
   activity: TripDay['activities'][0];

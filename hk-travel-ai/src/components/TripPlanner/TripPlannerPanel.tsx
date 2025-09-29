@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { TravelGuideProps } from '@/constants/travel';
-import { useTripPlan, TripDay } from '@/contexts/TripPlanContext';
+import { useTripPlan } from '@/contexts/TripPlanContext';
+import { TripDay } from '@/contexts/TripTypes';
 import { FaPlus } from 'react-icons/fa';
 import TripHeader from './TripHeader';
 import TripOverview from './TripOverview';

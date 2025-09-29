@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import SolutionTabs from '@/components/SolutionTabs';
-import RetailChatPanel from '@/components/RetailChatPanel';
+import TravelChatPanel from '@/components/TravelChatPanel';
 
 import LogicPanel from '@/components/LogicPanel';
 import ChatbotFeature from '@/components/ChatbotFeature';
@@ -25,7 +25,7 @@ export default function Home({ selectedGuide } : { selectedGuide: TravelGuidePro
         <div className="flex flex-col lg:flex-row gap-4 w-full h-full">
           <div className="flex-1 flex flex-col h-full">
             <LogicPanel isActive={activeTab === 'guide-features'} selectedGuide={selectedGuide} />
-            <RetailChatPanel isActive={activeTab === 'travel-chat'} chatId={travelChatId} selectedGuide={selectedGuide} />
+            <TravelChatPanel isActive={activeTab === 'travel-chat'} chatId={travelChatId} selectedGuide={selectedGuide} />
             <TripPlannerPanel isActive={activeTab === 'trip-planner'} selectedGuide={selectedGuide} />
           </div>
         </div>

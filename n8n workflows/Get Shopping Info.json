@@ -5,13 +5,13 @@
       "parameters": {
         "inputSource": "passthrough"
       },
-      "id": "154222cc-6679-4869-b9f2-22ba4f46a0a4",
+      "id": "dd1a1f77-80fd-44ad-8e2a-8c1e66839c2d",
       "typeVersion": 1.1,
       "name": "When Executed by Another Workflow",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "position": [
-        176,
-        -128
+        0,
+        0
       ]
     },
     {
@@ -19,16 +19,16 @@
         "promptType": "define",
         "text": "={{ $json.query }}",
         "options": {
-          "systemMessage": "=You are an <> Assistant AI specialized in providing accurate, interesting <> information for Hong Kong, sourced exclusively from the Hong Kong Tourism Board.\n\nUsers may provide their areas of interests or travel dates. You must call the tool \"<>\" to get the <> for users. You must use the tool to retrieve the latest data before answering any query.\n\nDo not rely on cached or outdated knowledge."
+          "systemMessage": "=Role/Persona:\nAct as a highly efficient Shopping Assistant AI specializing in delivering precise and engaging shopping information for Hong Kong, sourced exclusively from the Hong Kong Tourism Board.\n\nEssential Context:\nUsers will provide specific interests or items they wish to purchase. It is essential that you utilize the tool \"Get-Hong-Kong-Shopping-Info\" to retrieve the most current shopping data for every user inquiry. If you are unsure about your answer, provide a summary of the tool's results without any apologies.\n\nOutput Format:\nResponses must be structured in a clear, organized list format, including shop names, concise descriptions, and relevant details.\n\nConcrete Examples:\n\nIf a user inquires about local fashion:\nChic Bazaar: Known for trendy local designs and sustainable options.\nLuxury Avenue: Offers high-end international brands with exclusive selections.\nConstraints:\n\nResponses must be concise, strictly under 150 words.\nEliminate any technical jargon to ensure clarity and accessibility.\nClearly cite the source of the information retrieved from the tool.\nYou must utilize the tool to obtain the latest data; do not rely on cached or outdated knowledge. If uncertain about an answer, provide a summary of the tool's results immediately."
         }
       },
-      "id": "c5ddccb8-83cd-4de6-818d-11fa4fe7f3fc",
+      "id": "1046eb06-bd36-4afe-b4c5-8fabfb714241",
       "name": "Agent",
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        400,
-        -128
+        224,
+        0
       ]
     },
     {
@@ -38,39 +38,83 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        368,
-        112
+        192,
+        240
       ],
-      "id": "2fd15516-f918-432e-8148-12617ada8472",
+      "id": "859f7ced-7158-478c-bfbc-99f69cae23d0",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
-          "id": "CHwRoEqp9IEPT54g",
+          "id": "ihOoLHVWQm8gBDQQ",
           "name": "Google Gemini(PaLM) Api account"
         }
       }
     },
     {
       "parameters": {
-        "toolDescription": "Get Hong Kong Shopping Info",
-        "url": "=",
-        "options": {}
+        "toolDescription": "Get Hong Kong Shopping Info\n",
+        "url": "=https://www.discoverhongkong.com/eng/plan/qts/shops-results/_jcr_content/root/responsivegrid/shopfinderandlisting.shop-listing.EN.json?",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "category",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Value', `Shopping Categories to Choose From:\nBeauty %26 Personal care;\nBooks %26 Stationeries;\nClothing %26 Accessories;\nComputers %26 Electronics;\nCustom Tailors;\nDepartment Stores;\nFoodstuffs - Candy, Snacks %26 Cake shops;\nFoodstuffs - Chinese Health, Health Foods %26 Tonic Foods;\nFoodstuffs - Dried Seafood;\nFoodstuffs - Others;\nFoodstuffs - Tea %26 Liquors;\nFurniture, Home Decorations %26 Household Products;\nGeneral Merchandise;\nHandbags, Luggage, Shoes %26 Leather Goods;\nJewellery %26 Watches;\nMoney Changers %26 Money Transfer Services;\nOptical Goods;\nOutdoors %26 Sports;\nSupermarket;\nTelecommunications Equipment;\nAntiques, Arts %26 Crafts;`, 'string') }}"
+            },
+            {
+              "name": "page",
+              "value": "1"
+            }
+          ]
+        },
+        "options": {},
+        "optimizeResponse": true,
+        "dataField": "=result",
+        "fieldsToInclude": "selected",
+        "fields": "=title, description, category"
       },
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        544,
-        112
+        368,
+        240
       ],
-      "id": "cd896523-5237-4b59-88eb-82275a8fb06c",
-      "name": "Get-Hong-Kong-<>-Info"
+      "id": "f2413e60-b080-446b-b948-6942f502a259",
+      "name": "Get-Hong-Kong-Shopping-Info"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        144
+      ],
+      "id": "4290bd85-fe9b-44dc-987d-335885f1e105",
+      "name": "When chat message received",
+      "webhookId": "577f2bfb-f0a1-4727-86b0-1e4275484703"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\"response\": {\n\"generations\": [\n[\n{\n\"text\": \"[\\\"Books & Stationeries\\\"]\",\n\"generationInfo\": {\n\"finishReason\": \"STOP\",\n\"index\": 0\n}\n}\n]\n]\n},\n\"tokenUsage\": {\n\"completionTokens\": 6,\n\"promptTokens\": 594,\n\"totalTokens\": 600\n}\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        496,
+        304
+      ],
+      "id": "feb2ffd4-c203-4aa6-9dfe-baf1bc0ff27c",
+      "name": "Structured Output Parser"
     }
   ],
   "pinData": {
     "When Executed by Another Workflow": [
       {
         "json": {
-          "query": "Any special events on 27 Sept?"
+          "query": "I want to shop"
         }
       }
     ]
@@ -98,7 +142,7 @@
         ]
       ]
     },
-    "Get-Hong-Kong-<>-Info": {
+    "Get-Hong-Kong-Shopping-Info": {
       "ai_tool": [
         [
           {
@@ -108,16 +152,33 @@
           }
         ]
       ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        []
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "d45e9908-e7d9-4df2-9bc8-801251decde8",
+  "versionId": "70cee09e-45cd-4149-bfe8-97ccf049b5ad",
   "meta": {
-    "instanceId": "47827cfb2f0fd42cf7d65f80c15f5a25826677d9389942bc8cab5ca0b3c9777d"
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d926d3d8287ed4fff3395056729f9824deb8423165737b8c33ce59a6e9e20147"
   },
-  "id": "RaQRkaaO7u94NWQ8",
+  "id": "96bTHz2VeIKODHbh",
   "tags": []
 }

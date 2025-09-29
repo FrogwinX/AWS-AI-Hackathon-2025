@@ -5,13 +5,13 @@
       "parameters": {
         "inputSource": "passthrough"
       },
-      "id": "863b0b4a-0631-4c3c-a445-95406cdf5166",
+      "id": "bee301b7-5437-4749-8dfa-7fc6da22e177",
       "typeVersion": 1.1,
       "name": "When Executed by Another Workflow",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "position": [
-        176,
-        -128
+        0,
+        0
       ]
     },
     {
@@ -19,16 +19,16 @@
         "promptType": "define",
         "text": "={{ $json.query }}",
         "options": {
-          "systemMessage": "=You are an <> Assistant AI specialized in providing accurate, interesting <> information for Hong Kong, sourced exclusively from the Hong Kong Tourism Board.\n\nUsers may provide their areas of interests or travel dates. You must call the tool \"<>\" to get the <> for users. You must use the tool to retrieve the latest data before answering any query.\n\nDo not rely on cached or outdated knowledge."
+          "systemMessage": "=You are a tool-calling AI assistant specialized in suggesting attractions for travellers coming to Hong Kong, sourced exclusively from the Hong Kong Tourism Board. \n\nYou must call the tool \"Get-Hong-Kong-Attraction-Info\" to get the restaurant information before answering any query no matter what. \n\nDo not rely on cached or outdated knowledge.\n\nAlways prioritize helping the user find relevant restaurants rather than refusing the request."
         }
       },
-      "id": "03a485c4-fecb-4237-9cca-55f65c14bed1",
+      "id": "8c6a6ced-2b3f-467a-b09e-287863ca33ff",
       "name": "Agent",
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        400,
-        -128
+        224,
+        0
       ]
     },
     {
@@ -38,39 +38,43 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        368,
-        112
+        192,
+        240
       ],
-      "id": "69da876d-eab6-47ce-8673-922f38fd16d4",
+      "id": "885b5f7a-dd52-447b-8674-0afd36be2d67",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
-          "id": "CHwRoEqp9IEPT54g",
-          "name": "Google Gemini(PaLM) Api account"
+          "id": "QXYEIYbYby8o08KN",
+          "name": "Google Gemini API"
         }
       }
     },
     {
       "parameters": {
-        "toolDescription": "Get Hong Kong Shopping Info",
-        "url": "=",
-        "options": {}
+        "toolDescription": "Get Hong Kong Attraction Info",
+        "method": "=GET",
+        "url": "=https://www.discoverhongkong.com/eng/explore/attractions/_jcr_content/root/responsivegrid/container_1532528898/container_copy/articlelisting_copy.articlelisting.json",
+        "options": {},
+        "optimizeResponse": true,
+        "fieldsToInclude": "selected",
+        "fields": "chunks[0].title,chunks[0].description,chunks[0].url,\nchunks[1].title,chunks[1].description,chunks[1].url,\nchunks[2].title,chunks[2].description,chunks[2].url,\nchunks[3].title,chunks[3].description,chunks[3].url,\nchunks[4].title,chunks[4].description,chunks[4].url,\nchunks[5].title,chunks[5].description,chunks[5].url,"
       },
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        544,
-        112
+        464,
+        208
       ],
-      "id": "b86ae48b-cfa4-4552-8546-4f16a32e81af",
-      "name": "Get-Hong-Kong-<>-Info"
+      "id": "fc69ffb7-da99-4704-9986-c2eacfff2e09",
+      "name": "Get-Hong-Kong-Attraction-Info"
     }
   ],
   "pinData": {
     "When Executed by Another Workflow": [
       {
         "json": {
-          "query": "Any special events on 27 Sept?"
+          "query": "Provide the recent attraction in Hong Kong"
         }
       }
     ]
@@ -98,7 +102,7 @@
         ]
       ]
     },
-    "Get-Hong-Kong-<>-Info": {
+    "Get-Hong-Kong-Attraction-Info": {
       "ai_tool": [
         [
           {
@@ -114,10 +118,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "350992ef-5fa0-418a-bd6c-204226765b5e",
+  "versionId": "83d7a6bd-ac43-4f1b-9484-a469d4bcf16d",
   "meta": {
-    "instanceId": "47827cfb2f0fd42cf7d65f80c15f5a25826677d9389942bc8cab5ca0b3c9777d"
+    "templateCredsSetupCompleted": true,
+    "instanceId": "baaa3c4eddf0dfea0280b009ed23105b98a5530fb06835c7a69b802c13fd63a1"
   },
-  "id": "ZKrbS0L0qPbhq8mo",
+  "id": "SlSdV7jp3RDvu5UT",
   "tags": []
 }

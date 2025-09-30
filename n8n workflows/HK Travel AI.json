@@ -198,7 +198,7 @@
         "text": "={{ $json.output }}\n{{ $json.intermediateSteps }}",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "=# ROLE AND GOAL\nYou are \"HK Travel Summary Expert\", an autonomous, friendly, and highly efficient AI assistant for Hong Kong tourism. Your goal is to summarize the information from your log information. Output your summary and following-up questions in  {{ $('When Executed by Another Workflow').item.json.language }} language.\n\n**Summary** If there is a travel plan, present the plan clearly. For each day, list:\n    - Morning, Afternoon, and Evening activities.\n    - The specific location/attraction/restaurant.\n    - The estimated cost and transportation method between activities.\n    - A note on why the plan suits their weather, budget, and interests.\n\nIf there is any error or no travel plan, summarize the contents from {{ $json.output }} and {{ $json.intermediateSteps }}.\n\n**Following Up Questions** Imagine you are the user that receive the summary, suggest 5 following up questions that you want to ask the Travel AI. The question should be delimited by '*'. Example: \n```\nWhat are some specific tips for getting the best view of the National Day fireworks display at Victoria Harbour on October 1st?*Can you recommend any specific dishes or must-try street foods at the Temple Street Night Market or Mong Kok for an authentic Hong Kong experience?*Are there any additional outdoor activities or hidden gems in Lantau Island that we could include in our Day 2 itinerary?*What are the best shopping spots in Causeway Bay for unique local products or souvenirs within our budget?*Could you suggest some family-friendly or group activities at Hong Kong Disneyland for its 20th anniversary celebrations?\n```\n\n**IMPORTANT** You MUST NOT mention anything about AI agent and their thinking data. You should not tell user about any error or faults\n\n**Output Format**:\n{\n  \"output\": <put your summary here>,\n  \"question\": <put following-up questions here>\n}\n\n"
+          "systemMessage": "=# ROLE AND GOAL\nYou are \"HK Travel Summary Expert\", an autonomous, friendly, and highly efficient AI assistant for Hong Kong tourism. Your goal is to summarize the information from your log information. Output your summary and following-up questions in  {{ $('When Executed by Another Workflow').item.json.language }} language.\n\n**Summary** \n\n1A. If there is any error or no travel plan, summarize the contents from {{ $json.output }} and {{ $json.intermediateSteps }}. Set `isPlan` to false.\n\n1B. If there is a travel plan, set `isPlan` to true and present the plan clearly. For each day, list the summary:\n    - Morning, Afternoon, and Evening activities.\n    - The specific location/attraction/restaurant.\n    - The estimated cost and transportation method between activities.\n    - A note on why the plan suits their weather, budget, and interests. \n\n**Following Up Questions** Imagine you are the user that receive the summary, suggest 5 following up questions that you want to ask the Travel AI. The question should be delimited by '*'. Example: \n```\nWhat are some specific tips for getting the best view of the National Day fireworks display at Victoria Harbour on October 1st?*Can you recommend any specific dishes or must-try street foods at the Temple Street Night Market or Mong Kok for an authentic Hong Kong experience?*Are there any additional outdoor activities or hidden gems in Lantau Island that we could include in our Day 2 itinerary?*What are the best shopping spots in Causeway Bay for unique local products or souvenirs within our budget?*Could you suggest some family-friendly or group activities at Hong Kong Disneyland for its 20th anniversary celebrations?\n```\n\n**IMPORTANT** You MUST NOT mention anything about AI agent and their thinking data. You should not tell user about any error or faults\n\n**Output Format**:\n{\n  \"output\": <put your summary here>,\n  \"question\": <put following-up questions here>\n  \"isPlan\": <true or false>\n}\n\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -530,19 +530,6 @@
     },
     {
       "parameters": {
-        "jsonSchemaExample": "{\n\t\"answer\": \"This is your complete 3-day HK trip plan...\",\n\t\"question\": \"What are some specific tips for getting the best view of the National Day fireworks display at Victoria Harbour on October 1st?*Can you recommend any specific dishes or must-try street foods at the Temple Street Night Market or Mong Kok for an authentic Hong Kong experience?*Are there any additional outdoor activities or hidden gems in Lantau Island that we could include in our Day 2 itinerary?*What are the best shopping spots in Causeway Bay for unique local products or souvenirs within our budget?*Could you suggest some family-friendly or group activities at Hong Kong Disneyland for its 20th anniversary celebrations?\"\n}"
-      },
-      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
-      "typeVersion": 1.3,
-      "position": [
-        1680,
-        224
-      ],
-      "id": "ec0e1a80-fd06-4ef7-8d02-7ffa1a6369c7",
-      "name": "Structured Output Parser"
-    },
-    {
-      "parameters": {
         "sessionIdType": "customKey",
         "sessionKey": "={{ $json.chatId }}"
       },
@@ -554,13 +541,26 @@
       ],
       "id": "99360157-7e6b-4401-9103-4927c6211bfc",
       "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n    \"answer\": \"This is your complete 3-day HK trip plan...\",\n\t\"question\": \"What are some specific tips for getting the best view of the National Day fireworks display at Victoria Harbour on October 1st?*Can you recommend any specific dishes or must-try street foods at the Temple Street Night Market or Mong Kok for an authentic Hong Kong experience?*Are there any additional outdoor activities or hidden gems in Lantau Island that we could include in our Day 2 itinerary?*What are the best shopping spots in Causeway Bay for unique local products or souvenirs within our budget?*Could you suggest some family-friendly or group activities at Hong Kong Disneyland for its 20th anniversary celebrations?\",\n    \"isPlan\": true\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1680,
+        224
+      ],
+      "id": "e76409d1-1d63-4f35-a45b-45d3c21e9178",
+      "name": "Structured Output Parser"
     }
   ],
   "pinData": {
     "When Executed by Another Workflow": [
       {
         "json": {
-          "chatInput": "Plan a 1-day HK trip, you should include the transportation info. Dates: Oct 1 2025, Budget: $10000, Interest: shopping, Solo",
+          "chatInput": "Plan a 1-day HK trip. Dates: Oct 1 2025, Budget: $10000, Interest: shopping, Solo",
           "language": "TRADITIONAL_CHINESE",
           "chatId": "12345"
         }
@@ -722,17 +722,6 @@
         ]
       ]
     },
-    "Structured Output Parser": {
-      "ai_outputParser": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_outputParser",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Simple Memory": {
       "ai_memory": [
         [
@@ -743,13 +732,24 @@
           }
         ]
       ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "76f38608-9d78-4b42-a1fc-1283b3c43ffa",
+  "versionId": "24f25c29-6150-4361-be21-c0031a81ab57",
   "meta": {
     "templateId": "self-building-ai-agent",
     "templateCredsSetupCompleted": true,

@@ -1,0 +1,249 @@
+{
+  "name": "Schedule Planner",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "schedule-planner",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ddf0ffb7-f46a-475b-a6ec-584d851db6b2",
+      "name": "Webhook",
+      "webhookId": "782ecac5-1955-4c93-99c2-2451f0368c10"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        416,
+        0
+      ],
+      "id": "2b8f1fad-23a3-4e81-8c48-4116512eadf7",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "chatInput"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        192
+      ],
+      "id": "fa9a71ad-1507-4734-b483-a2d0915f145b",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        192,
+        384
+      ],
+      "id": "aac22138-8214-4e17-8df4-fce2af32ad3c",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "CHwRoEqp9IEPT54g",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=# ROLE AND GOAL\nYou are \"HK Travel Format Expert\", an autonomous and highly efficient summary format assistant for Hong Kong tourism. Your goal is to format the given summary in JSON format.\n\n**Summary** \nIf there is any error or missing information, use a empty string \"\" to represent.\n\n**Output Format**:\n{\n  \"title\": \"3-Day Hong Kong Adventure\",\n  \"startDate\": \"2025-02-15\",\n  \"endDate\": \"2025-02-17\",\n  \"totalDays\": 3,\n  \"arrivalPort\": \"Hong Kong International Airport\",\n  \"departurePort\": \"\",\n  \"days\": [\n    {\n      \"date\": \"2025-02-15\",\n      \"accommodation\": {\n        \"name\": \"The Peninsula Hong Kong\",\n        \"address\": \"Salisbury Road, Tsim Sha Tsui, Kowloon\",\n        \"checkIn\": \"15:00\",\n        \"checkOut\": \"12:00\"\n      },\n      \"activities\": [\n        {\n          \"id\": \"activity-1-1\",\n          \"time\": \"10:00\",\n          \"location\": \"Hong Kong International Airport\",\n          \"activity\": \"Arrival and Airport Express to Central\",\n          \"duration\": \"1 hour\",\n          \"type\": \"departure\"\n        },\n        {\n          \"id\": \"activity-1-2\",\n          \"time\": \"12:00\",\n          \"location\": \"Central District\",\n          \"activity\": \"Lunch at Maxim's Palace for Dim Sum\",\n          \"duration\": \"1.5 hours\",\n          \"type\": \"activity\"\n        },\n        {\n          \"id\": \"activity-1-3\",\n          \"time\": \"15:00\",\n          \"location\": \"The Peninsula Hong Kong\",\n          \"activity\": \"Hotel Check-in\",\n          \"duration\": \"30 minutes\",\n          \"type\": \"accommodation\"\n        },\n        {\n          \"id\": \"activity-1-4\",\n          \"time\": \"16:00\",\n          \"location\": \"Tsim Sha Tsui Promenade\",\n          \"activity\": \"Walk along the waterfront and enjoy harbor views\",\n          \"duration\": \"2 hours\",\n          \"type\": \"activity\"\n        },\n        {\n          \"id\": \"activity-1-5\",\n          \"time\": \"20:00\",\n          \"location\": \"Symphony of Lights\",\n          \"activity\": \"Watch the Symphony of Lights show\",\n          \"duration\": \"30 minutes\",\n          \"type\": \"activity\"\n        }\n      ],\n      \"transports\": [\n        {\n          \"id\": \"transport-1-1\",\n          \"fromActivityId\": \"activity-1-1\",\n          \"toActivityId\": \"activity-1-2\",\n          \"method\": \"Airport Express + MTR\",\n          \"duration\": \"45 minutes\"\n        },\n        {\n          \"id\": \"transport-1-2\",\n          \"fromActivityId\": \"activity-1-2\",\n          \"toActivityId\": \"activity-1-3\",\n          \"method\": \"MTR + Walking\",\n          \"duration\": \"30 minutes\"\n        },\n        {\n          \"id\": \"transport-1-3\",\n          \"fromActivityId\": \"activity-1-3\",\n          \"toActivityId\": \"activity-1-4\",\n          \"method\": \"Walking\",\n          \"duration\": \"5 minutes\"\n        },\n        {\n          \"id\": \"transport-1-4\",\n          \"fromActivityId\": \"activity-1-4\",\n          \"toActivityId\": \"activity-1-5\",\n          \"method\": \"Walking\",\n          \"duration\": \"10 minutes\"\n        }\n      ]\n    },\n    {\n      \"date\": \"2025-02-16\",\n      \"accommodation\": {\n        \"name\": \"The Peninsula Hong Kong\",\n        \"address\": \"Salisbury Road, Tsim Sha Tsui, Kowloon\"\n      },\n      \"activities\": [\n        {\n          \"id\": \"activity-2-1\",\n          \"time\": \"09:00\",\n          \"location\": \"Victoria Peak\",\n          \"activity\": \"Take Peak Tram to Victoria Peak for panoramic views\",\n          \"duration\": \"3 hours\",\n          \"type\": \"activity\"\n        },\n        {\n          \"id\": \"activity-2-2\",\n          \"time\": \"13:00\",\n          \"location\": \"Central District\",\n          \"activity\": \"Lunch at a local restaurant\",\n          \"duration\": \"1 hour\",\n          \"type\": \"activity\"\n        },\n        {\n          \"id\": \"activity-2-3\",\n          \"time\": \"15:00\",\n          \"location\": \"Man Mo Temple\",\n          \"activity\": \"Visit historic Man Mo Temple\",\n          \"duration\": \"1 hour\",\n          \"type\": \"activity\"\n        },\n        {\n          \"id\": \"activity-2-4\",\n          \"time\": \"17:00\",\n          \"location\": \"Ladies' Market\",\n          \"activity\": \"Shopping at Ladies' Market in Mong Kok\",\n          \"duration\": \"2 hours\",\n          \"type\": \"activity\"\n        },\n        {\n          \"id\": \"activity-2-5\",\n          \"time\": \"20:00\",\n          \"location\": \"Temple Street Night Market\",\n          \"activity\": \"Dinner and night market exploration\",\n          \"duration\": \"2 hours\",\n          \"type\": \"activity\"\n        }\n      ],\n      \"transports\": [\n        {\n          \"id\": \"transport-2-1\",\n          \"fromActivityId\": \"accommodation-1\",\n          \"toActivityId\": \"activity-2-1\",\n          \"method\": \"MTR + Peak Tram\",\n          \"duration\": \"45 minutes\"\n        },\n        {\n          \"id\": \"transport-2-2\",\n          \"fromActivityId\": \"activity-2-1\",\n          \"toActivityId\": \"activity-2-2\",\n          \"method\": \"Peak Tram + Walking\",\n          \"duration\": \"30 minutes\"\n        },\n        {\n          \"id\": \"transport-2-3\",\n          \"fromActivityId\": \"activity-2-2\",\n          \"toActivityId\": \"activity-2-3\",\n          \"method\": \"Tram\",\n          \"duration\": \"15 minutes\"\n        },\n        {\n          \"id\": \"transport-2-4\",\n          \"fromActivityId\": \"activity-2-3\",\n          \"toActivityId\": \"activity-2-4\",\n          \"method\": \"MTR\",\n          \"duration\": \"20 minutes\"\n        },\n        {\n          \"id\": \"transport-2-5\",\n          \"fromActivityId\": \"activity-2-4\",\n          \"toActivityId\": \"activity-2-5\",\n          \"method\": \"Walking\",\n          \"duration\": \"10 minutes\"\n        }\n      ]\n    },\n    {\n      \"date\": \"2025-02-17\",\n      \"accommodation\": {\n        \"name\": \"The Peninsula Hong Kong\",\n        \"address\": \"Salisbury Road, Tsim Sha Tsui, Kowloon\",\n        \"checkOut\": \"12:00\"\n      },\n      \"activities\": [\n        {\n          \"id\": \"activity-3-1\",\n          \"time\": \"09:00\",\n          \"location\": \"Wong Tai Sin Temple\",\n          \"activity\": \"Visit Wong Tai Sin Temple for good fortune\",\n          \"duration\": \"1.5 hours\",\n          \"type\": \"activity\"\n        },\n        {\n          \"id\": \"activity-3-2\",\n          \"time\": \"11:30\",\n          \"location\": \"The Peninsula Hong Kong\",\n          \"activity\": \"Hotel Check-out and luggage storage\",\n          \"duration\": \"30 minutes\",\n          \"type\": \"accommodation\"\n        },\n        {\n          \"id\": \"activity-3-3\",\n          \"time\": \"13:00\",\n          \"location\": \"Causeway Bay\",\n          \"activity\": \"Last-minute shopping and lunch\",\n          \"duration\": \"2 hours\",\n          \"type\": \"activity\"\n        },\n        {\n          \"id\": \"activity-3-4\",\n          \"time\": \"16:00\",\n          \"location\": \"Hong Kong International Airport\",\n          \"activity\": \"Departure via Airport Express\",\n          \"duration\": \"1 hour\",\n          \"type\": \"departure\"\n        }\n      ],\n      \"transports\": [\n        {\n          \"id\": \"transport-3-1\",\n          \"fromActivityId\": \"accommodation-2\",\n          \"toActivityId\": \"activity-3-1\",\n          \"method\": \"MTR\",\n          \"duration\": \"30 minutes\"\n        },\n        {\n          \"id\": \"transport-3-2\",\n          \"fromActivityId\": \"activity-3-1\",\n          \"toActivityId\": \"activity-3-2\",\n          \"method\": \"MTR\",\n          \"duration\": \"45 minutes\"\n        },\n        {\n          \"id\": \"transport-3-3\",\n          \"fromActivityId\": \"activity-3-2\",\n          \"toActivityId\": \"activity-3-3\",\n          \"method\": \"MTR\",\n          \"duration\": \"20 minutes\"\n        },\n        {\n          \"id\": \"transport-3-4\",\n          \"fromActivityId\": \"activity-3-3\",\n          \"toActivityId\": \"activity-3-4\",\n          \"method\": \"Airport Express\",\n          \"duration\": \"45 minutes\"\n        }\n      ]\n    }\n  ]\n}\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        192,
+        192
+      ],
+      "id": "7b9d484e-f768-4ba0-b76a-a38b8997dee2",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        336,
+        384
+      ],
+      "id": "c5a290e4-b39d-448c-9bde-a64ba8853121",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "ls12Gbr7nEgVzzuQ",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/ls12Gbr7nEgVzzuQ",
+          "cachedResultName": "Schedule Planner"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "chatInput": "={{ $json.body.chatInput }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "chatInput",
+              "displayName": "chatInput",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "language",
+              "displayName": "language",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "chatId",
+              "displayName": "chatId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "de698239-ba50-4f2e-b7b1-0d0e8db5c41c",
+      "name": "Call 'Schedule Planner'"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "chatInput": "您好！以下是您2025年10月1日香港一日遊的行程摘要：\n\n**上午 (9:00 AM - 1:00 PM)：中環奢華購物**\n*   **活動地點：** ifc 商場、置地廣場、連卡佛。\n*   **交通方式：** 乘坐港鐵前往香港站。\n*   **適合原因：** 適合享受高端購物體驗。\n\n**午餐 (1:00 PM - 2:30 PM)：中環高級歐式午餐**\n*   **餐廳建議：** 1111 ONES、BEEFBAR、CAFE LANDMARK。\n*   **預計費用：** 港幣 $500 - $1,500。\n*   **適合原因：** 在購物後享用精緻餐飲。\n\n**下午 (2:30 PM - 6:30 PM)：銅鑼灣多元化購物及潮流探索**\n*   **活動地點：** 時代廣場、希慎廣場、崇光百貨、LOG-ON。\n*   **交通方式：** 從中環乘坐港鐵港島線至銅鑼灣 (約26分鐘，港幣 $5-10)。\n*   **預計費用：** 交通約港幣 $5-10。\n*   **適合原因：** 體驗香港熱鬧的購物氛圍，尋找獨特商品。\n\n**晚餐 (6:30 PM - 8:00 PM)：尖沙咀海景餐廳晚餐，欣賞煙花**\n*   **餐廳建議：** Amelia By Paulo Airaudo、Pano (務必提早預訂並要求海景座位)。\n*   **交通方式：** 從銅鑼灣乘坐港鐵至尖沙咀 (約28分鐘，港幣 $10-15)。\n*   **預計費用：** 港幣 $800 - $2,500+ (煙花匯演期間海景座位價格會更高)。\n*   **適合原因：** 在最佳位置享受美食並準備觀賞國慶煙花。\n\n**晚上 (8:00 PM 起)：國慶煙花匯演及海濱漫步**\n*   **活動地點：** 維多利亞港 (尖沙咀海濱長廊、西九文化區、中環海濱)。\n*   **預計費用：** 免費 (除非選擇付費觀賞活動)。\n*   **適合原因：** 國慶日一年一度的盛事，為旅程畫上難忘的句號。\n\n**預算分配 (約數)：**\n*   購物：高達港幣 $7,000 - $8,000\n*   午餐：港幣 $500 - $1,500\n*   晚餐：港幣 $800 - $2,500+\n*   交通：港幣 $20-30\n\n此行程完美結合了高端購物、精緻餐飲和難忘的國慶煙花匯演。請務必盡早預訂晚餐座位，並指明需要海景位置！\n\n祝您在香港享受愉快的獨自旅行！"
+        }
+      }
+    ],
+    "Webhook": [
+      {
+        "json": {
+          "chatInput": "您好！以下是您2025年10月1日香港一日遊的行程摘要：\n\n**上午 (9:00 AM - 1:00 PM)：中環奢華購物**\n*   **活動地點：** ifc 商場、置地廣場、連卡佛。\n*   **交通方式：** 乘坐港鐵前往香港站。\n*   **適合原因：** 適合享受高端購物體驗。\n\n**午餐 (1:00 PM - 2:30 PM)：中環高級歐式午餐**\n*   **餐廳建議：** 1111 ONES、BEEFBAR、CAFE LANDMARK。\n*   **預計費用：** 港幣 $500 - $1,500。\n*   **適合原因：** 在購物後享用精緻餐飲。\n\n**下午 (2:30 PM - 6:30 PM)：銅鑼灣多元化購物及潮流探索**\n*   **活動地點：** 時代廣場、希慎廣場、崇光百貨、LOG-ON。\n*   **交通方式：** 從中環乘坐港鐵港島線至銅鑼灣 (約26分鐘，港幣 $5-10)。\n*   **預計費用：** 交通約港幣 $5-10。\n*   **適合原因：** 體驗香港熱鬧的購物氛圍，尋找獨特商品。\n\n**晚餐 (6:30 PM - 8:00 PM)：尖沙咀海景餐廳晚餐，欣賞煙花**\n*   **餐廳建議：** Amelia By Paulo Airaudo、Pano (務必提早預訂並要求海景座位)。\n*   **交通方式：** 從銅鑼灣乘坐港鐵至尖沙咀 (約28分鐘，港幣 $10-15)。\n*   **預計費用：** 港幣 $800 - $2,500+ (煙花匯演期間海景座位價格會更高)。\n*   **適合原因：** 在最佳位置享受美食並準備觀賞國慶煙花。\n\n**晚上 (8:00 PM 起)：國慶煙花匯演及海濱漫步**\n*   **活動地點：** 維多利亞港 (尖沙咀海濱長廊、西九文化區、中環海濱)。\n*   **預計費用：** 免費 (除非選擇付費觀賞活動)。\n*   **適合原因：** 國慶日一年一度的盛事，為旅程畫上難忘的句號。\n\n**預算分配 (約數)：**\n*   購物：高達港幣 $7,000 - $8,000\n*   午餐：港幣 $500 - $1,500\n*   晚餐：港幣 $800 - $2,500+\n*   交通：港幣 $20-30\n\n此行程完美結合了高端購物、精緻餐飲和難忘的國慶煙花匯演。請務必盡早預訂晚餐座位，並指明需要海景位置！\n\n祝您在香港享受愉快的獨自旅行！"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Call 'Schedule Planner'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Schedule Planner'": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9601974f-c775-4553-9c6e-dd3f8cc371a7",
+  "meta": {
+    "instanceId": "47827cfb2f0fd42cf7d65f80c15f5a25826677d9389942bc8cab5ca0b3c9777d"
+  },
+  "id": "ls12Gbr7nEgVzzuQ",
+  "tags": []
+}

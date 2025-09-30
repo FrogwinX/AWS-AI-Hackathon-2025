@@ -4,15 +4,14 @@ import React, { useState } from 'react';
 import { TravelGuideProps } from '@/constants/travel';
 import { useTripPlan } from '@/contexts/TripPlanContext';
 import { TripDay, Activity, Transport } from '@/constants/tripStructure';
-import { sampleHongKongTrip } from '@/constants/sampleSchedule';
-import { FaPlus, FaDownload } from 'react-icons/fa';
+import { FaPlus } from 'react-icons/fa';
 import TripHeader from './TripHeader';
 import TripOverview from './TripOverview';
 import DayCard from './DayCard';
 import DeleteConfirmModal from './DeleteConfirmModal';
 
 const TripPlannerPanel = ({ isActive, selectedGuide }: { isActive: boolean, selectedGuide: TravelGuideProps }) => {
-  const { tripPlan, addActivity, updateActivity, removeActivity, addDay, removeDay, updateTripPlan, updateAccommodation, importSchedule } = useTripPlan();
+  const { tripPlan, addActivity, updateActivity, removeActivity, addDay, removeDay, updateTripPlan, updateAccommodation } = useTripPlan();
 
   const [editingDay, setEditingDay] = useState<number | null>(null);
   const [editingActivity, setEditingActivity] = useState<number | null>(null);
@@ -119,9 +118,7 @@ const TripPlannerPanel = ({ isActive, selectedGuide }: { isActive: boolean, sele
     });
   };
 
-  const handleImportSample = () => {
-    importSchedule(sampleHongKongTrip);
-  };
+
 
   return (
     <div className={`flex-3 bg-white h-full rounded-xl shadow-lg flex flex-col overflow-hidden ${isActive ? 'flex' : 'hidden'}`}>
@@ -134,18 +131,6 @@ const TripPlannerPanel = ({ isActive, selectedGuide }: { isActive: boolean, sele
           onAddNewDay={addNewDay}
           onStartDateChange={handleStartDateChange}
         />
-
-        {/* Import Sample Schedule Button */}
-        {tripPlan.days.length === 0 && (
-          <div className="mb-6 text-center">
-            <button
-              onClick={handleImportSample}
-              className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium flex items-center gap-2 mx-auto"
-            >
-              <FaDownload /> Import Sample Hong Kong Trip
-            </button>
-          </div>
-        )}
 
         {/* Daily Itinerary */}
         {tripPlan.days.length > 0 && (

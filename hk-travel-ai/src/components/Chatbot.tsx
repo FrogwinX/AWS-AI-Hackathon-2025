@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import { getChatbotMessage } from "@/app/api/agenticChatbot";
+import { generateSchedule } from "@/app/api/scheduleGenerator";
 import {
   LANGUAGES,
   DEFAULT_MESSAGES,
@@ -34,7 +35,7 @@ const Chatbot = ({
   chatId: string;
   selectedGuide: TravelGuideProps;
 }) => {
-  const { parseChatResponse } = useTripPlan();
+  const { parseChatResponse, importSchedule } = useTripPlan();
 
   const [currentLanguage, setCurrentLanguage] = useState<Language>(
     "TRADITIONAL_CHINESE"
@@ -265,6 +266,19 @@ const Chatbot = ({
               }
         )
       );
+
+      // Generate and import schedule in background if isPlan is true
+      if (response && response.output && response.output.isPlan && typeof botResponse === 'string') {
+        generateSchedule(botResponse)
+          .then(schedule => {
+            if (schedule && schedule.days && schedule.days.length > 0) {
+              importSchedule(schedule);
+            }
+          })
+          .catch(error => {
+            console.error('Error generating schedule:', error);
+          });
+      }
     } catch (error) {
       console.error(error);
       setMessages((prev) =>

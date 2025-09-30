@@ -66,7 +66,7 @@
           "parameters": [
             {
               "name": "X-Goog-Api-Key",
-              "value": "AIzaSyClsliQOh7s2XkpVgXIGzrpnLv2qVoanNs"
+              "value": ""
             },
             {
               "name": "X-Goog-FieldMask",

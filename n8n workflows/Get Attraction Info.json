@@ -3,15 +3,21 @@
   "nodes": [
     {
       "parameters": {
-        "inputSource": "passthrough"
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "query"
+            }
+          ]
+        }
       },
-      "id": "bee301b7-5437-4749-8dfa-7fc6da22e177",
+      "id": "8a4d0cdf-f701-46b0-8dc2-61eb846e8014",
       "typeVersion": 1.1,
       "name": "When Executed by Another Workflow",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "position": [
-        0,
-        0
+        80,
+        -48
       ]
     },
     {
@@ -22,13 +28,13 @@
           "systemMessage": "=You are a tool-calling AI assistant specialized in suggesting attractions for travellers coming to Hong Kong, sourced exclusively from the Hong Kong Tourism Board. \n\nYou must call the tool \"Get-Hong-Kong-Attraction-Info\" to get the restaurant information before answering any query no matter what. \n\nDo not rely on cached or outdated knowledge.\n\nAlways prioritize helping the user find relevant restaurants rather than refusing the request."
         }
       },
-      "id": "8c6a6ced-2b3f-467a-b09e-287863ca33ff",
+      "id": "5331a495-34bc-4d3d-8cf6-6005fbd1f61b",
       "name": "Agent",
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        224,
-        0
+        304,
+        -48
       ]
     },
     {
@@ -38,15 +44,15 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        192,
-        240
+        272,
+        192
       ],
-      "id": "885b5f7a-dd52-447b-8674-0afd36be2d67",
+      "id": "842922dd-231c-4bdb-997a-0815cac37e4a",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
-          "id": "QXYEIYbYby8o08KN",
-          "name": "Google Gemini API"
+          "id": "CHwRoEqp9IEPT54g",
+          "name": "Google Gemini(PaLM) Api account"
         }
       }
     },
@@ -63,10 +69,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        464,
-        208
+        544,
+        160
       ],
-      "id": "fc69ffb7-da99-4704-9986-c2eacfff2e09",
+      "id": "e7028f13-d5cc-4438-9c93-65db7850006d",
       "name": "Get-Hong-Kong-Attraction-Info"
     }
   ],
@@ -118,11 +124,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "83d7a6bd-ac43-4f1b-9484-a469d4bcf16d",
+  "versionId": "61a93acf-4eb6-4148-a384-d9fa9c41d6a1",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "baaa3c4eddf0dfea0280b009ed23105b98a5530fb06835c7a69b802c13fd63a1"
+    "instanceId": "47827cfb2f0fd42cf7d65f80c15f5a25826677d9389942bc8cab5ca0b3c9777d"
   },
-  "id": "SlSdV7jp3RDvu5UT",
+  "id": "ZKrbS0L0qPbhq8mo",
   "tags": []
 }

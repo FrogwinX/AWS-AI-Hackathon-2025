@@ -1,0 +1,90 @@
+{
+  "name": "Special Event Handler",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://www.discoverhongkong.com/eng/what-s-new/events/_jcr_content/root/responsivegrid/container/container_copy_copy_/dataviewcontainer.data.json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        192,
+        0
+      ],
+      "id": "d5b1fe62-2529-45e3-aaf5-d05c7cc271b2",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "id": "bf8e3728-1c50-44bb-8af1-f668aed7bd4b",
+      "typeVersion": 1.1,
+      "name": "When Executed by Another Workflow",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0b5ea713-261e-4468-8a0e-9846e883c7ff",
+              "name": "datalist",
+              "value": "={{ $json.dataList.slice(0, 30) }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        400,
+        0
+      ],
+      "id": "b81414c2-c196-498e-bb5c-091c0d80f84f",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1748a6c4-fef4-4c04-80ab-69cbf16edb95",
+  "meta": {
+    "instanceId": "47827cfb2f0fd42cf7d65f80c15f5a25826677d9389942bc8cab5ca0b3c9777d"
+  },
+  "id": "g9npn2nNqVLdslzk",
+  "tags": []
+}

@@ -6,7 +6,7 @@ An intelligent travel companion for exploring Hong Kong, powered by AI and built
 
 - **Smart Travel Chat**: Get personalized recommendations for attractions, dining, and activities
 - **Premium Guide Service**: Access detailed itineraries, reservations, and exclusive experiences  
-- **Multi-language Support**: Available in English, Traditional Chinese, Simplified Chinese, and Arabic
+- **Multi-language Support**: Available in English, Traditional Chinese, Simplified Chinese
 - **Real-time Information**: Live updates on transportation, weather, and events
 - **Cultural Insights**: Learn about local customs, hidden gems, and authentic experiences
 

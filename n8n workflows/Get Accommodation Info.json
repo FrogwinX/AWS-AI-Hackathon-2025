@@ -3,15 +3,21 @@
   "nodes": [
     {
       "parameters": {
-        "inputSource": "passthrough"
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "query"
+            }
+          ]
+        }
       },
-      "id": "04c52dc1-5372-4b6c-8c28-ff999d8e3ce3",
+      "id": "a22a0b89-4f90-4be7-b65f-ae9d152e55ef",
       "typeVersion": 1.1,
       "name": "When Executed by Another Workflow",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "position": [
-        0,
-        0
+        176,
+        256
       ]
     },
     {
@@ -22,13 +28,13 @@
           "systemMessage": "=Role/Persona:\nAct as a specialized Accommodation Seeker Assistant AI focused on providing accurate and up-to-date accommodation information in Hong Kong, using data exclusively from the Hong Kong Tourism Board.\n\nEssential Context:\nYour primary function is to assist users in finding suitable accommodations based on their interests or shopping needs in Hong Kong. You must utilize the \"Get-Hong-Kong-Accommodation-Info\" tool to retrieve real-time information for every query.\n\nOutput Format:\nPresent the accommodation options in a user-friendly list format, including details such as the accommodation name, location, price range, and key features.\n\nConcrete Examples:\n\nIf a user asks for family-friendly hotels near Disneyland, provide a list that includes:\nHotel Name: \"Disney Explorers Lodge\"\nLocation: Lantau Island\nPrice Range: $200 - $300 per night\nKey Features: Pool, Kids’ Club, Free Shuttle Service\nConstraints:\n\nAlways use the \"Get-Hong-Kong-Accommodation-Info\" tool for the latest data.\nLimit responses to a maximum of 5 accommodations per query.\nAvoid using technical jargon and keep the language simple and accessible.\nIf unsure about an answer, summarize the results returned from the tool clearly and concisely, under 100 words."
         }
       },
-      "id": "b2ac5abb-4363-4803-833f-385d13d51a1b",
+      "id": "6b8e22e2-e376-44c1-a393-0ebe271cbdd7",
       "name": "Agent",
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        224,
-        0
+        400,
+        256
       ]
     },
     {
@@ -38,14 +44,14 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        192,
-        240
+        368,
+        496
       ],
-      "id": "44b232fd-b8c1-4641-b249-c86d4b0f9fb3",
+      "id": "3e09d266-db19-4fa7-9c9d-091e08028124",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
-          "id": "ihOoLHVWQm8gBDQQ",
+          "id": "CHwRoEqp9IEPT54g",
           "name": "Google Gemini(PaLM) Api account"
         }
       }
@@ -78,10 +84,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        368,
-        240
+        544,
+        496
       ],
-      "id": "81282804-f0d4-46ff-8082-16d01c719666",
+      "id": "58bc3400-3eb7-4058-a6c1-bf1e6876c9cd",
       "name": "Get-Hong-Kong-Accommodation-Info"
     }
   ],
@@ -133,11 +139,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "c1ebf0b1-6a8e-4b46-bd4f-3af6f7cf4274",
+  "versionId": "b047e152-4816-4135-8af9-cd3233297376",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "d926d3d8287ed4fff3395056729f9824deb8423165737b8c33ce59a6e9e20147"
+    "instanceId": "47827cfb2f0fd42cf7d65f80c15f5a25826677d9389942bc8cab5ca0b3c9777d"
   },
-  "id": "5S2nKIUVYubmpkqU",
+  "id": "DGBt5F4jZsaot6YY",
   "tags": []
 }

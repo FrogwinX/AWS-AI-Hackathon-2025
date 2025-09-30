@@ -3,7 +3,13 @@
   "nodes": [
     {
       "parameters": {
-        "inputSource": "passthrough"
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "query"
+            }
+          ]
+        }
       },
       "id": "e1e2db83-7712-4922-abbe-3f7319cab6a4",
       "typeVersion": 1.1,
@@ -19,7 +25,7 @@
         "promptType": "define",
         "text": "={{ $json.query }}",
         "options": {
-          "systemMessage": "=You are an <> Assistant AI specialized in providing accurate, interesting <> information for Hong Kong, sourced exclusively from the Hong Kong Tourism Board.\n\nUsers may provide their areas of interests or travel dates. You must call the tool \"<>\" to get the <> for users. You must use the tool to retrieve the latest data before answering any query.\n\nDo not rely on cached or outdated knowledge."
+          "systemMessage": "=You are an AI agent in an n8n workflow tasked with retrieving and summarizing transportation information using the Get-Transportation-Info tool, which interfaces with the Google Maps Routes API. The user provides:\n\n- origin: Starting address (e.g., \"Central MTR Station, Hong Kong\").\n- destination: Destination address (e.g., \"Tsim Sha Tsui Star Ferry Pier, Hong Kong\").\n- travelMode: Transportation mode (\"WALK\", \"TRANSIT\", \"DRIVE\", or \"BICYCLE\"). Default to \"TRANSIT\" if not provided or invalid.\n- departureTime: Departure time in RFC 3339 format (e.g., \"2025-09-29T16:30:00+08:00\"). Optional; if omitted, use current time (04:07 PM HKT, Sep 29, 2025).\n\nYour task:\n\n1. Validate inputs:\nEnsure origin and destination are non-empty strings.\nVerify travelMode is one of [\"WALK\", \"TRANSIT\", \"DRIVE\", \"BICYCLE\"]. If empty or invalid, set to \"TRANSIT\".\nIf departureTime is provided, ensure it’s valid RFC 3339. If departureTime is not provided, use a valid RFC 3339 time. If anything invalid, return an error.\n\n2. Call the Get-Transportation-Info tool with the inputs. When you call the tool, pass in the request body in the following format:\n```\n{\n    \"origin\": {\n        \"address\": <origin location>\n    }, \n    \"destination\": {\n        \"address\": <destination location>\n    }, \n    \"travelMode\": <travelMode: \"TRANSIT\" (default), \"WALK\", \"DRIVE\", \"BICYCLE\">,\n    \"departureTime\": <departureTime in RFC 3339 format>\n}\n```\nAn example input:\n```\n{\n    \"origin\": {\n        \"address\": \"CUHK, Hong Kong\"\n    }, \n    \"destination\": {\n        \"address\": \"UST, Hong Kong\"\n    }, \n    \"travelMode\": \"TRANSIT\",\n    \"departureTime\": \"2025-09-29T16:00:00+08:00\"\n}\n```\n\n3. Summarize the response in plain text, including:\nTotal distance in kilometers (rounded to 1 decimal place).\nEstimated duration in minutes (rounded to nearest minute).\nRoute description (if available, e.g., \"Via Des Voeux Rd Central\").\nUp to three key steps (e.g., for walking: navigation instructions like \"Turn right onto Nathan Rd\"; for transit: details like \"Take MTR Tsuen Wan Line for 3 stops\").\n\n4. Handle errors gracefully, returning a clear error message (e.g., \"Error: Invalid departure time format\" or \"Error: No routes found\").\n\n\n\n"
         }
       },
       "id": "fcc87eab-c1eb-48b3-91c0-a4caddc59c30",
@@ -52,25 +58,42 @@
     },
     {
       "parameters": {
-        "toolDescription": "Get Hong Kong Shopping Info",
-        "url": "=",
+        "toolDescription": "Get Hong Kong Transportation Info",
+        "method": "POST",
+        "url": "https://routes.googleapis.com/directions/v2:computeRoutes",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Goog-Api-Key",
+              "value": "AIzaSyClsliQOh7s2XkpVgXIGzrpnLv2qVoanNs"
+            },
+            {
+              "name": "X-Goog-FieldMask",
+              "value": "routes.duration,routes.description,routes.legs.steps.transitDetails"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('JSON', ``, 'json') }}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        544,
+        560,
         112
       ],
       "id": "4ae36374-57fb-41ec-8ccc-f102b755a9d5",
-      "name": "Get-Hong-Kong-<>-Info"
+      "name": "Get-Transportation-Info"
     }
   ],
   "pinData": {
     "When Executed by Another Workflow": [
       {
         "json": {
-          "query": "Any special events on 27 Sept?"
+          "query": "Sept 30"
         }
       }
     ]
@@ -98,7 +121,7 @@
         ]
       ]
     },
-    "Get-Hong-Kong-<>-Info": {
+    "Get-Transportation-Info": {
       "ai_tool": [
         [
           {
@@ -114,7 +137,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "1cdf5472-d728-41e5-a45f-4681a84f553e",
+  "versionId": "88aafa0e-f0af-4d93-99e6-078935158b58",
   "meta": {
     "instanceId": "47827cfb2f0fd42cf7d65f80c15f5a25826677d9389942bc8cab5ca0b3c9777d"
   },

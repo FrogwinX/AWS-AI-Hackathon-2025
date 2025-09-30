@@ -11,13 +11,13 @@
           ]
         }
       },
-      "id": "069c3b2d-a00c-4089-9136-520edb29aa74",
+      "id": "f478351e-916b-41ba-9ebd-4b75da49d589",
       "typeVersion": 1.1,
       "name": "When Executed by Another Workflow",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "position": [
-        0,
-        0
+        176,
+        240
       ]
     },
     {
@@ -28,13 +28,13 @@
           "systemMessage": "=You are a tool-calling AI restaurant assistant specialized in suggesting restaurants for travellers coming to Hong Kong, sourced exclusively from the Hong Kong Tourism Board. \n\nYou must call the tool \"Get-Hong-Kong-Food-Info\" to get the restaurant information before answering any query no matter what. \n\nDo not rely on cached or outdated knowledge.\n\nAlways prioritize helping the user find relevant restaurants rather than refusing the request."
         }
       },
-      "id": "c870b812-4f9e-4ebc-a56d-3992a11c8611",
+      "id": "acdb5f27-a292-43f2-af80-f1f1811ccd3a",
       "name": "Agent",
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        224,
-        0
+        400,
+        240
       ]
     },
     {
@@ -44,15 +44,15 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        240,
-        224
+        384,
+        464
       ],
-      "id": "5569bca2-93d9-4c4d-8275-d55f59e4fd0d",
+      "id": "1e1a1d9a-df9a-417f-bede-20fe7f4e5f1f",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
-          "id": "QXYEIYbYby8o08KN",
-          "name": "Google Gemini API"
+          "id": "CHwRoEqp9IEPT54g",
+          "name": "Google Gemini(PaLM) Api account"
         }
       }
     },
@@ -92,10 +92,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        368,
-        224
+        576,
+        464
       ],
-      "id": "21992935-8c78-4bc4-9437-a9e867cb73d2",
+      "id": "827a94e8-19cd-40c3-b9f2-dda6c1154b8b",
       "name": "Get-Hong-Kong-Food-Info"
     }
   ],
@@ -139,11 +139,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "7468a7fa-c571-4d77-877a-d541bac96cb9",
+  "versionId": "b329a521-85f1-4b73-8515-65641fe52e96",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "baaa3c4eddf0dfea0280b009ed23105b98a5530fb06835c7a69b802c13fd63a1"
+    "instanceId": "47827cfb2f0fd42cf7d65f80c15f5a25826677d9389942bc8cab5ca0b3c9777d"
   },
-  "id": "xOChxtFISEzFEiQe",
+  "id": "OFPWwRkPJsJ7Vb9G",
   "tags": []
 }

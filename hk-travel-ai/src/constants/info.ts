@@ -53,7 +53,7 @@ export const SOLUTIONS = (selectedGuide: TravelGuideProps) => {
             {
               icon: "language",
               title: "Multilingual Support",
-              description: "Communicate in English, Traditional Chinese, Simplified Chinese, or Arabic with seamless translation assistance."
+              description: "Communicate in English, Traditional Chinese, Simplified Chinese with seamless translation assistance."
             },
             {
               icon: "mobile-alt",
@@ -121,7 +121,7 @@ export const KEY_CAPABILITIES = [
   {
     icon: "globe",
     title: "Multi-lingual Support",
-    description: "English, Traditional Chinese, Simplified Chinese, Arabic with real-time translation"
+    description: "English, Traditional Chinese, Simplified Chinese with real-time translation"
   }
 ];
 

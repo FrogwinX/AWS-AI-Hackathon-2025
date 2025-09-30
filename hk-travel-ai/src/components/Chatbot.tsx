@@ -226,34 +226,19 @@ const Chatbot = ({
         botResponse = response;
       } else if (response && typeof response.output === 'string') {
         botResponse = response.output;
-      } else if (response && response.output) {
-        // If output is an object or array, try to extract meaningful text
-        if (Array.isArray(response.output)) {
-          botResponse = response.output.map((item: any) => {
-            if (typeof item === 'string') return item;
-            if (item.type === 'text' && item.text) return item.text;
-            if (item.functionCall) {
-              const funcName = item.functionCall.name.replace(/_/g, ' ').toLowerCase();
-              return `🔍 Getting ${funcName}...`;
-            }
-            return JSON.stringify(item);
-          }).join('\n');
-        } else {
-          botResponse = JSON.stringify(response.output);
-        }
+      } else if (response && response.output && typeof response.output.answer === 'string') {
+        botResponse = response.output.answer;
       } else {
         botResponse = "Sorry, I could not process that.";
       }
 
-      const followUp = response && response.question ?
-        (typeof response.question === 'string' ? response.question.split("*") : []) : [];
+      const followUp = response && response.output && response.output.question ?
+        (typeof response.output.question === 'string' ? response.output.question.split("*") : []) : [];
 
       // Parse the AI response to update trip plan
       if (typeof botResponse === 'string') {
         parseChatResponse(botResponse);
       }
-
-
 
       setMessages((prev) =>
         prev.map((msg) =>
@@ -441,7 +426,7 @@ const Chatbot = ({
 
       {/* Input area fixed at bottom */}
       <div className="p-2 sm:p-4 h-16 sm:h-20 border-t border-gray-200 flex gap-2 sm:gap-3 items-center relative">
-        {isRecording ? (
+        {/* {isRecording ? (
           <button
             onMouseDown={stopRecording}
             className="bg-red-500 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-red-600"
@@ -462,7 +447,7 @@ const Chatbot = ({
           >
             <FaMicrophone />
           </button>
-        )}
+        )} */}
 
         {isRecording ? (
           <div className="flex-1 bg-red-100 text-red-700 px-3 py-2 sm:px-4 sm:py-3 rounded-lg text-sm sm:text-base">

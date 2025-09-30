@@ -3,177 +3,6 @@
   "nodes": [
     {
       "parameters": {
-        "promptType": "define",
-        "text": "=# User message\n{{ $json.body.chatInput }}",
-        "options": {
-          "systemMessage": "=# ROLE AND GOAL\nYou are \"HK Travel Expert\", an autonomous, friendly, and highly efficient AI assistant for Hong Kong tourism. Your goal is to actively build the perfect, personalized travel plan by using your tools to gather real-time information. You are proactive and thorough.\n\n# TOOLS\nYou have the following tools available. You MUST use them to gather accurate information to fulfill user requests. Do not assume you know the answers.\n\n- **Get Attraction Info:** Use for details on attractions, museums, parks, viewpoints, hours, prices, and locations.\n- **Get Food Info:** Use to find restaurants, cafes, street food, dishes, cuisines, and their price ranges.\n- **Get Transportation Info:** Use to check MTR/bus/ferry routes, fares, travel times, and Octopus card info.\n- **Get Weather Info:** USE THIS TOOL FOR EVERY travel plan. Check the forecast for the user's travel dates. This is critical.\n- **Get Accommodation Info:** Use to find accommodations based on budget, location, and amenities.\n- **Get Shopping Info:** Use for info on malls, markets, streets, and what to buy.\n- **Get Special Events Info:** Use to check festivals, concerts, exhibitions, or seasonal events happening during the user's visit.\n\n# CORE WORKFLOW & RULES\n1.  **Introduction & Qualification:** Greet the user and immediately ask key questions to understand their plan:\n    - **Travel Dates** (Exact dates are CRITICAL for weather and events)\n    - **Duration** (Number of days)\n    - **Interests** (e.g., culture, food, hiking, family fun)\n    - **Budget** (e.g., budget, mid-range, luxury. This is a HARD CONSTRAINT.)\n    - **Travel Party** (solo, couple, family, etc.)\n\nIf you confirm the user can only provide partial information, you should feel free to any suggestion that match them.\n\n2.  **Tool Usage Strategy:** Based on the user's answers, plan which tools to call and in what order.\n    - **First, always call `Get Weather Info`** for their dates. Adjust plans accordingly (e.g., suggest indoor activities like museums if rain is forecast).\n    - **Then, call other tools** to build the plan (e.g., `Get Attraction Info`, `Get Food Info`).\n    - **Always check `Get Transportation Info`** to ensure the locations you suggest are logically connected and convenient to travel between. Group activities by district.\n\n3.  **Output & Confirmation:** Present the plan clearly. For each day, list:\n    - Morning, Afternoon, and Evening activities.\n    - The specific location/attraction/restaurant (use details from your tools).\n    - The estimated cost and transportation method between activities.\n    - A note on why the plan suits their weather, budget, and interests.\n\n# EXAMPLE INTERACTION\nUser: \"I want to visit for 3 days with my partner next weekend. We love art and food. Our budget is mid-range.\"\nYou:\n[THINKING: User provided dates, duration, interests, and budget. I must get weather first. Then find art landmark and mid-range food. Finally, check transportation links.]\n[ACTION: Call `Get Weather Info` for next weekend.]\n[ACTION: Call `Get Attraction Info` for \"art museums galleries\".]\n[ACTION: Call `Get Food Info` for \"mid-range restaurants\" near the museums.]\n[ACTION: Call `Get Transportation Info` to connect the points.]\n[RESPONSE: \"Welcome! I've checked the weather for next weekend, and it looks sunny and warm—perfect for exploring! Based on your love for art and food, I've built a 3-day plan. I've ensured all activities are mid-range budget and that travel between them is convenient using the MTR...\"]\n\n# FINAL INSTRUCTIONS\nYou are empowered to use your tools as needed. Be a thoughtful planner. Always double-check constraints. If you cannot find information with your tools, be honest and tell the user."
-        }
-      },
-      "id": "41174c8a-6ac8-42bd-900e-ca15196600c5",
-      "name": "Agent",
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 1.7,
-      "position": [
-        592,
-        32
-      ]
-    },
-    {
-      "parameters": {
-        "sessionIdType": "customKey",
-        "sessionKey": "={{ $json.body.chatId }}"
-      },
-      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
-      "typeVersion": 1.3,
-      "position": [
-        624,
-        256
-      ],
-      "id": "41301410-237b-4cc6-b810-fa8805723f02",
-      "name": "Simple Memory"
-    },
-    {
-      "parameters": {
-        "description": "Call this tool to Get Food Info",
-        "workflowId": {
-          "__rl": true,
-          "value": "OFPWwRkPJsJ7Vb9G",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/OFPWwRkPJsJ7Vb9G",
-          "cachedResultName": "Get Food Info"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {},
-          "matchingColumns": [],
-          "schema": [],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
-      "typeVersion": 2.2,
-      "position": [
-        944,
-        256
-      ],
-      "id": "bd88a9ac-76c0-4633-b3a0-6befbe9fa5fe",
-      "name": "Get Food Info"
-    },
-    {
-      "parameters": {
-        "description": "Call this tool to Get Transportation Info",
-        "workflowId": {
-          "__rl": true,
-          "value": "HCqLP9tu4jKRiOTq",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/HCqLP9tu4jKRiOTq",
-          "cachedResultName": "Get Transportation Info"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {},
-          "matchingColumns": [],
-          "schema": [],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
-      "typeVersion": 2.2,
-      "position": [
-        1104,
-        256
-      ],
-      "id": "b6abd40d-44cb-4c35-80ca-3c4b7cbbf125",
-      "name": "Get Transportation Info"
-    },
-    {
-      "parameters": {
-        "description": "Call this tool to Get Weather Info",
-        "workflowId": {
-          "__rl": true,
-          "value": "kz3PxEAvXBH5epSl",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/kz3PxEAvXBH5epSl",
-          "cachedResultName": "Get Weather Info"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {},
-          "matchingColumns": [],
-          "schema": [],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
-      "typeVersion": 2.2,
-      "position": [
-        1280,
-        256
-      ],
-      "id": "37736b23-aac2-406f-895f-e4b0d665d10b",
-      "name": "Get Weather Info"
-    },
-    {
-      "parameters": {
-        "description": "Call this tool to Get Shopping Info",
-        "workflowId": {
-          "__rl": true,
-          "value": "RaQRkaaO7u94NWQ8",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/RaQRkaaO7u94NWQ8",
-          "cachedResultName": "Get Shopping Info"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {},
-          "matchingColumns": [],
-          "schema": [],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
-      "typeVersion": 2.2,
-      "position": [
-        944,
-        416
-      ],
-      "id": "aea4f9d5-c32d-44fe-9738-d810a999849e",
-      "name": "Get Shopping Info"
-    },
-    {
-      "parameters": {
-        "description": "Call this tool to Get Special Events Info",
-        "workflowId": {
-          "__rl": true,
-          "value": "MDkUGY8k8PFvKx3a",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/MDkUGY8k8PFvKx3a",
-          "cachedResultName": "Get Special Events Info"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {},
-          "matchingColumns": [],
-          "schema": [],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
-      "typeVersion": 2.2,
-      "position": [
-        1104,
-        416
-      ],
-      "id": "e9af75e5-360f-4aa8-bd6a-6adefc5817d7",
-      "name": "Get Special Events Info"
-    },
-    {
-      "parameters": {
         "httpMethod": "POST",
         "path": "travel-ai",
         "responseMode": "responseNode",
@@ -183,7 +12,7 @@
       "typeVersion": 2.1,
       "position": [
         368,
-        32
+        -160
       ],
       "id": "8b4c4036-e189-47df-8808-3062ff6148ee",
       "name": "Webhook",
@@ -196,8 +25,8 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.4,
       "position": [
-        944,
-        32
+        976,
+        -160
       ],
       "id": "b2bfe610-06db-440b-9442-1f6a9fe7cd5d",
       "name": "Respond to Webhook"
@@ -209,8 +38,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        464,
-        256
+        432,
+        224
       ],
       "id": "c9bc6d7a-8bd2-46ed-ac78-7b1660faa4e8",
       "name": "Google Gemini Chat Model",
@@ -223,35 +52,167 @@
     },
     {
       "parameters": {
-        "description": "Call this tool to Get Accommodation Info",
-        "workflowId": {
-          "__rl": true,
-          "value": "DGBt5F4jZsaot6YY",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/DGBt5F4jZsaot6YY",
-          "cachedResultName": "Get Accommodation Info"
-        },
         "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {},
-          "matchingColumns": [],
-          "schema": [],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
+          "values": [
+            {
+              "name": "chatInput"
+            },
+            {
+              "name": "language"
+            },
+            {
+              "name": "chatId"
+            }
+          ]
         }
       },
-      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
-      "typeVersion": 2.2,
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
       "position": [
-        784,
-        416
+        368,
+        32
       ],
-      "id": "38dab0a6-c39a-414f-a1ec-18e8b13a1e1f",
-      "name": "Get Accommodation Info"
+      "id": "ec0ecec8-82aa-4afe-a953-503bfc91ee66",
+      "name": "When Executed by Another Workflow"
     },
     {
       "parameters": {
-        "description": "Call this tool to Get Attraction Info",
+        "workflowId": {
+          "__rl": true,
+          "value": "I7c9sa5Zmnn1lcHx",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/I7c9sa5Zmnn1lcHx",
+          "cachedResultName": "HK Travel AI"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "chatInput": "={{ $json.chatInput }}",
+            "language": "={{ $json.language }}",
+            "chatId": "={{ $json.chatId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "chatInput",
+              "displayName": "chatInput",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "language",
+              "displayName": "language",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "chatId",
+              "displayName": "chatId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        768,
+        -160
+      ],
+      "id": "dfaf2318-b088-405f-a241-85b07469a44f",
+      "name": "Call 'HK Travel AI'"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c59dc0f5-49be-42eb-921f-c01647b717fa",
+              "name": "chatInput",
+              "value": "={{ $json.body.chatInput }}",
+              "type": "string"
+            },
+            {
+              "id": "415727dc-76e2-4141-919a-a0eea0e3e064",
+              "name": "language",
+              "value": "={{ $json.body.lang }}",
+              "type": "string"
+            },
+            {
+              "id": "a7c075bc-6cb9-4bf2-9300-4561072d7d0d",
+              "name": "chatId",
+              "value": "={{ $json.body.chatId }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        560,
+        -160
+      ],
+      "id": "4a36bbdb-8b4f-4a06-a949-698507fa8c95",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1504,
+        224
+      ],
+      "id": "7d0dfcce-a0ab-41d7-b105-48e295d64d21",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "CHwRoEqp9IEPT54g",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.output }}\n{{ $json.intermediateSteps }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=# ROLE AND GOAL\nYou are \"HK Travel Summary Expert\", an autonomous, friendly, and highly efficient AI assistant for Hong Kong tourism. Your goal is to summarize the information from your log information. Output your summary and following-up questions in  {{ $('When Executed by Another Workflow').item.json.language }} language.\n\n**Summary** If there is a travel plan, present the plan clearly. For each day, list:\n    - Morning, Afternoon, and Evening activities.\n    - The specific location/attraction/restaurant.\n    - The estimated cost and transportation method between activities.\n    - A note on why the plan suits their weather, budget, and interests.\n\nIf there is any error or no travel plan, summarize the contents from {{ $json.output }} and {{ $json.intermediateSteps }}.\n\n**Following Up Questions** Imagine you are the user that receive the summary, suggest 5 following up questions that you want to ask the Travel AI. The question should be delimited by '*'. Example: \n```\nWhat are some specific tips for getting the best view of the National Day fireworks display at Victoria Harbour on October 1st?*Can you recommend any specific dishes or must-try street foods at the Temple Street Night Market or Mong Kok for an authentic Hong Kong experience?*Are there any additional outdoor activities or hidden gems in Lantau Island that we could include in our Day 2 itinerary?*What are the best shopping spots in Causeway Bay for unique local products or souvenirs within our budget?*Could you suggest some family-friendly or group activities at Hong Kong Disneyland for its 20th anniversary celebrations?\n```\n\n**IMPORTANT** You MUST NOT mention anything about AI agent and their thinking data. You should not tell user about any error or faults\n\n**Output Format**:\n{\n  \"output\": <put your summary here>,\n  \"question\": <put following-up questions here>\n}\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1504,
+        32
+      ],
+      "id": "81c9ba4f-c6fa-4a32-93b9-a55d758e9d81",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to Get Hong Kong Attraction Info.",
         "workflowId": {
           "__rl": true,
           "value": "ZKrbS0L0qPbhq8mo",
@@ -261,111 +222,357 @@
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
-          "value": {}
+          "value": {
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "query"
+          ],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
         }
       },
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
         784,
-        256
+        224
       ],
       "id": "b149e6d6-7b36-46bc-9178-7e26f906d106",
-      "name": "Get Attraction Info"
+      "name": "Get-Attraction-Info"
     },
     {
       "parameters": {
-        "options": {}
+        "description": "Call this tool to Get Hong Kong Accommodation Info.",
+        "workflowId": {
+          "__rl": true,
+          "value": "DGBt5F4jZsaot6YY",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/DGBt5F4jZsaot6YY",
+          "cachedResultName": "Get Accommodation Info"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "query"
+          ],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
       },
-      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        784,
+        384
+      ],
+      "id": "38dab0a6-c39a-414f-a1ec-18e8b13a1e1f",
+      "name": "Get-Accommodation-Info"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to Get Hong Kong Food Info.",
+        "workflowId": {
+          "__rl": true,
+          "value": "OFPWwRkPJsJ7Vb9G",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/OFPWwRkPJsJ7Vb9G",
+          "cachedResultName": "Get Food Info"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "query"
+          ],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        944,
+        224
+      ],
+      "id": "bd88a9ac-76c0-4633-b3a0-6befbe9fa5fe",
+      "name": "Get-Food-Info"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to Get Hong Kong Shopping Info.",
+        "workflowId": {
+          "__rl": true,
+          "value": "RaQRkaaO7u94NWQ8",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/RaQRkaaO7u94NWQ8",
+          "cachedResultName": "Get Shopping Info"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "query"
+          ],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        944,
+        384
+      ],
+      "id": "aea4f9d5-c32d-44fe-9738-d810a999849e",
+      "name": "Get-Shopping-Info"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to Get Hong Kong Transportation Info. When you call the tool, pass in the param in the following format:\n```\n{\n    \"origin\": {\n        \"address\": <origin location>\n    }, \n    \"destination\": {\n        \"address\": <destination location>\n    }, \n    \"travelMode\": <travelMode: \"TRANSIT\" (default), \"WALK\", \"DRIVE\", \"BICYCLE\">,\n    \"departureTime\": <departureTime in RFC 3339 format>\n}\n```\nAn example input:\n```\n{\n    \"origin\": {\n        \"address\": \"CUHK, Hong Kong\"\n    }, \n    \"destination\": {\n        \"address\": \"UST, Hong Kong\"\n    }, \n    \"travelMode\": \"TRANSIT\",\n    \"departureTime\": \"2025-09-29T16:00:00+08:00\"\n}\n```",
+        "workflowId": {
+          "__rl": true,
+          "value": "HCqLP9tu4jKRiOTq",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/HCqLP9tu4jKRiOTq",
+          "cachedResultName": "Get Transportation Info"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1104,
+        224
+      ],
+      "id": "b6abd40d-44cb-4c35-80ca-3c4b7cbbf125",
+      "name": "Get-Transportation-Info"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to Get Hong Kong Special Events Info.",
+        "workflowId": {
+          "__rl": true,
+          "value": "MDkUGY8k8PFvKx3a",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/MDkUGY8k8PFvKx3a",
+          "cachedResultName": "Get Special Events Info"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "query"
+          ],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1104,
+        384
+      ],
+      "id": "e9af75e5-360f-4aa8-bd6a-6adefc5817d7",
+      "name": "Get-Special-Events-Info"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to Get Hong Kong Weather Info.",
+        "workflowId": {
+          "__rl": true,
+          "value": "kz3PxEAvXBH5epSl",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/kz3PxEAvXBH5epSl",
+          "cachedResultName": "Get Weather Info"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "query"
+          ],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1280,
+        224
+      ],
+      "id": "37736b23-aac2-406f-895f-e4b0d665d10b",
+      "name": "Get-Weather-Info"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# User Query\n{{ $('When Executed by Another Workflow').item.json.chatInput }}",
+        "options": {
+          "systemMessage": "=# ROLE AND GOAL\nYou are \"HK Travel Expert\", an autonomous, friendly, and highly efficient AI assistant for Hong Kong tourism. Your goal is to actively answer HK travel information or build the perfect, personalized travel plan by using your tools to gather real-time information. You are proactive and thorough.\n\n# TOOLS INSTRUCTIONS\nYou have the following tools available. You MUST use them to gather accurate information to fulfill user requests. Do not assume you know the answers.\n\n- **Get-Attraction-Info:** Use for details on attractions, museums, parks, viewpoints, hours, prices, and locations.\n\n- **Get-Food-Info:** Use to find restaurants, cafes, street food, dishes, cuisines, and their price ranges.\n\n- **Get-Transportation-Info:** Use to check MTR/bus/ferry routes, fares, travel times, and Octopus card info. You should call this tool multiple times for each pair of origin location and destination location you planned. When you call the tool, pass in the param in the following format:\n```\n{\n    \"origin\": {\n        \"address\": <origin location>\n    }, \n    \"destination\": {\n        \"address\": <destination location>\n    }, \n    \"travelMode\": <travelMode: \"TRANSIT\" (default), \"WALK\", \"DRIVE\", \"BICYCLE\">,\n    \"departureTime\": <departureTime in RFC 3339 format>\n}\n```\nAn example input:\n```\n{\n    \"origin\": {\n        \"address\": \"CUHK, Hong Kong\"\n    }, \n    \"destination\": {\n        \"address\": \"UST, Hong Kong\"\n    }, \n    \"travelMode\": \"TRANSIT\",\n    \"departureTime\": \"2025-09-29T16:00:00+08:00\"\n}\n```\n\n- **Get-Weather-Info:** Check the forecast for the user's travel dates.\n\n- **Get-Accommodation-Info:** Use to find accommodations based on budget, location, and amenities.\n\n- **Get-Shopping-Info:** Use for info on malls, markets, streets, and what to buy.\n\n- **Get-Special-Events-Info:** Use to check festivals, concerts, exhibitions, or seasonal events happening during the user's visit.\n\n**Tool Usage Strategy:** Based on the user's query, plan which tools to call and in what order.\n\n1. If the user wants a travel plan, call ALL the tools:\n- **1. always call Get-Weather-Info** for their dates. Adjust plans accordingly (e.g., suggest indoor activities like museums if rain is forecast).\n\n- **2. you must call other tools** to build the plan:\n  - Get-Shopping-Info tool\n  - Get-Food-Info tool\n  - Get-Accommodation-Info tool\n  - Get-Attraction-Info tool\n  - Get-Special-Events-Info tool\n\n- **3. always check Get-Transportation-Info tool** to ensure the locations you suggest are logically connected and convenient to travel between. Group activities by district.\n\n2. If the user shows specific areas of interests, call the related tools.\n\n# CORE WORKFLOW & RULES\n1A. **Introduction & Qualification:** If the user wants a travel plan, greet the user and immediately ask key questions to understand their plan:\n\n- **Travel Dates** (Exact dates are CRITICAL for weather and events)\n- **Duration** (Number of days)\n- **Interests** (e.g., culture, food, hiking, family fun)\n- **Budget** (e.g., budget, mid-range, luxury. This is a HARD CONSTRAINT.)\n- **Travel Party** (solo, couple, family, etc.)\n\nIf you confirm the user can only provide partial information, you should feel free to any suggestion that match them.\n\n1B. If the user asks general Hong Kong travel questions, you should make decision and call the related tools to answer user queries. Attach any URL for users to find out more information.\n\n2. **Output & Confirmation:** Present the plan clearly. For each day, list:\n    - Morning, Afternoon, and Evening activities.\n    - The specific location/attraction/restaurant.\n    - The estimated cost and transportation method between activities.\n    - A note on why the plan suits their weather, budget, and interests.\n\n# FINAL INSTRUCTIONS\nYou are empowered to use your tools as needed. Be a thoughtful planner. Always double-check constraints. Remeber to iterate multiple time and call tools to get all the information done before ending your output.",
+          "maxIterations": 15,
+          "returnIntermediateSteps": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        608,
+        32
+      ],
+      "id": "0f1b0504-7fa5-4760-94e1-e084e0f56c03",
+      "name": "HK Travel Agent"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"answer\": \"This is your complete 3-day HK trip plan...\",\n\t\"question\": \"What are some specific tips for getting the best view of the National Day fireworks display at Victoria Harbour on October 1st?*Can you recommend any specific dishes or must-try street foods at the Temple Street Night Market or Mong Kok for an authentic Hong Kong experience?*Are there any additional outdoor activities or hidden gems in Lantau Island that we could include in our Day 2 itinerary?*What are the best shopping spots in Causeway Bay for unique local products or souvenirs within our budget?*Could you suggest some family-friendly or group activities at Hong Kong Disneyland for its 20th anniversary celebrations?\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        368,
-        -112
+        1680,
+        224
       ],
-      "id": "a4137cfa-280d-40a5-86c0-c8b73b9df149",
-      "name": "When chat message received",
-      "webhookId": "f263c6ba-b5e6-44d0-ac5e-590de8649842"
+      "id": "ec0e1a80-fd06-4ef7-8d02-7ffa1a6369c7",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.chatId }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        624,
+        224
+      ],
+      "id": "99360157-7e6b-4401-9103-4927c6211bfc",
+      "name": "Simple Memory"
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "chatInput": "Plan a 1-day HK trip, you should include the transportation info. Dates: Oct 1 2025, Budget: $10000, Interest: shopping, Solo",
+          "language": "TRADITIONAL_CHINESE",
+          "chatId": "12345"
+        }
+      }
+    ]
+  },
   "connections": {
-    "Simple Memory": {
-      "ai_memory": [
-        []
-      ]
-    },
-    "Get Food Info": {
-      "ai_tool": [
-        [
-          {
-            "node": "Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get Transportation Info": {
-      "ai_tool": [
-        [
-          {
-            "node": "Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get Weather Info": {
-      "ai_tool": [
-        [
-          {
-            "node": "Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get Shopping Info": {
-      "ai_tool": [
-        [
-          {
-            "node": "Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get Special Events Info": {
-      "ai_tool": [
-        [
-          {
-            "node": "Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Webhook": {
       "main": [
         [
           {
-            "node": "Agent",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Agent": {
-      "main": [
-        [
-          {
-            "node": "Respond to Webhook",
+            "node": "Edit Fields",
             "type": "main",
             "index": 0
           }
@@ -376,30 +583,162 @@
       "ai_languageModel": [
         [
           {
-            "node": "Agent",
+            "node": "HK Travel Agent",
             "type": "ai_languageModel",
             "index": 0
           }
         ]
       ]
     },
-    "Get Accommodation Info": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "HK Travel Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'HK Travel AI'": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Call 'HK Travel AI'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get-Attraction-Info": {
       "ai_tool": [
         [
           {
-            "node": "Agent",
+            "node": "HK Travel Agent",
             "type": "ai_tool",
             "index": 0
           }
         ]
       ]
     },
-    "Get Attraction Info": {
+    "Get-Accommodation-Info": {
       "ai_tool": [
         [
           {
-            "node": "Agent",
+            "node": "HK Travel Agent",
             "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get-Food-Info": {
+      "ai_tool": [
+        [
+          {
+            "node": "HK Travel Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get-Shopping-Info": {
+      "ai_tool": [
+        [
+          {
+            "node": "HK Travel Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get-Transportation-Info": {
+      "ai_tool": [
+        [
+          {
+            "node": "HK Travel Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get-Special-Events-Info": {
+      "ai_tool": [
+        [
+          {
+            "node": "HK Travel Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get-Weather-Info": {
+      "ai_tool": [
+        [
+          {
+            "node": "HK Travel Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HK Travel Agent": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "HK Travel Agent",
+            "type": "ai_memory",
             "index": 0
           }
         ]
@@ -410,7 +749,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "f8223b94-9b43-44ee-9d54-9a3e6c2f11a2",
+  "versionId": "76f38608-9d78-4b42-a1fc-1283b3c43ffa",
   "meta": {
     "templateId": "self-building-ai-agent",
     "templateCredsSetupCompleted": true,

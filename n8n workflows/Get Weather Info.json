@@ -3,7 +3,13 @@
   "nodes": [
     {
       "parameters": {
-        "inputSource": "passthrough"
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "query"
+            }
+          ]
+        }
       },
       "id": "c055762a-8fe7-4141-a639-df2372f30060",
       "typeVersion": 1.1,
@@ -114,7 +120,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "41e1a9ce-6f7f-4be2-95e7-8a36c78d11c1",
+  "versionId": "cca0a6f6-2d26-44b6-beab-b720160ce045",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "47827cfb2f0fd42cf7d65f80c15f5a25826677d9389942bc8cab5ca0b3c9777d"

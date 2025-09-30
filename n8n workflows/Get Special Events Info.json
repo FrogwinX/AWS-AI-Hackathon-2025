@@ -3,7 +3,13 @@
   "nodes": [
     {
       "parameters": {
-        "inputSource": "passthrough"
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "query"
+            }
+          ]
+        }
       },
       "id": "b9569e8f-0e91-4f48-9e41-e9e36fa0c555",
       "typeVersion": 1.1,
@@ -52,18 +58,31 @@
     },
     {
       "parameters": {
-        "toolDescription": "Get Hong Kong Event Info",
-        "url": "=https://www.discoverhongkong.com/eng/what-s-new/events/_jcr_content/root/responsivegrid/container/container_copy_copy_/dataviewcontainer.data.json",
-        "options": {}
+        "description": "Get Hong Kong Event Info",
+        "workflowId": {
+          "__rl": true,
+          "value": "g9npn2nNqVLdslzk",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/g9npn2nNqVLdslzk",
+          "cachedResultName": "Special Event Handler"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
       },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
       "position": [
         544,
         192
       ],
-      "id": "05e3285a-1b48-46b0-8af5-3182f68e7d83",
-      "name": "Get-Hong-Kong-Event-Info"
+      "id": "6e3b33b6-bdcf-4879-bf3a-4a9821fcf454",
+      "name": "Get Hong Kong Event Info"
     }
   ],
   "pinData": {
@@ -98,7 +117,7 @@
         ]
       ]
     },
-    "Get-Hong-Kong-Event-Info": {
+    "Get Hong Kong Event Info": {
       "ai_tool": [
         [
           {
@@ -114,7 +133,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "a429636e-de56-4623-bc20-9d658d270e94",
+  "versionId": "c892edd7-9a49-4461-862f-9e858c12ce8d",
   "meta": {
     "instanceId": "47827cfb2f0fd42cf7d65f80c15f5a25826677d9389942bc8cab5ca0b3c9777d"
   },

@@ -13,6 +13,7 @@ interface TripPlanContextType {
   removeDay: (dayIndex: number) => void;
   updateAccommodation: (dayIndex: number, accommodation: Partial<TripDay['accommodation']>) => void;
   parseChatResponse: (response: string) => void;
+  importSchedule: (schedule: TripPlan) => void;
 }
 
 const TripPlanContext = createContext<TripPlanContextType | undefined>(undefined);
@@ -171,6 +172,10 @@ export const TripPlanProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
+  const importSchedule = (schedule: TripPlan) => {
+    setTripPlan(schedule);
+  };
+
   const parseChatResponse = (response: string) => {
     if (!response || typeof response !== 'string') {
       return;
@@ -245,7 +250,8 @@ export const TripPlanProvider = ({ children }: { children: ReactNode }) => {
     addDay,
     removeDay,
     updateAccommodation,
-    parseChatResponse
+    parseChatResponse,
+    importSchedule
   };
 
   return (
